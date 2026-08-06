@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f8f8f8;
+        font-family: Arial, sans-serif;
+    }
+
+    .register-box {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.7);
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        width: 320px;
+    }
+    
+    .register-box h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .input-group input {
+        width: 80%;
+        padding: 10px 40px 10px 15px;
+        border: 1px solid #ccc;
+        border-radius: 25px;
+        outline: none;
+        font-size: 14px;
+    }
+
+    .input-group button {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-15%);
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .register-box button.submit-btn {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 25px;
+        background-color: #821b16;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .register-box button.submit-btn:hover {
+        background-color: #a3231c;
+    }
+
+    .login-link {
+        display: block;
+        margin-top: 15px;
+        font-size: 14px;
+        color: #821b16;
+        text-decoration: underline;
+        transition: color 0.3s ease;
+    }
+
+    .login-link:hover {
+        color: #e72b21;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-box">
+    <h2>Register</h2>
+    <form>
+      <div class="input-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" required>
+      </div>
+      <div class="input-group">
+        <label for="reg-password">Password</label>
+        <input type="password" id="reg-password" required>
+        <button type="button" onclick="togglePassword('reg-password')">👁</button>
+      </div>
+      <div class="input-group">
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" id="confirm-password" required>
+        <button type="button" onclick="togglePassword('confirm-password')">👁</button>
+      </div>
+      <button type="submit" class="submit-btn">Sign Up</button>
+    </form>
+    <a href="login.html" class="login-link">Already have an account? Login</a>
+  </div>
+
+  <script>
+    function togglePassword(fieldId) {
+      const field = document.getElementById(fieldId);
+      field.type = field.type === "password" ? "text" : "password";
+    }
+  </script>
+</body>
+</html>
