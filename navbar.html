@@ -46,12 +46,18 @@
             <a href="${URL}/customer/productCatalogue.html" class="nav-link text-white mx-3">Products</a>
             <a href="${URL}/customer/userProfile.html" class="nav-link text-white mx-3">Profile</a>
             <a href="${URL}/customer/contactPage.html" class="nav-link text-white mx-3">Contact Us</a>
+            <a href="#" id="logout-link" class="nav-link text-white mx-3 me-4">Logout</a>
             <a href="${URL}/customer/shoppingCart.html" class="text-white fs-3">
               <i class="ri-shopping-cart-2-line"></i>
             </a>
           </nav>
         </div>
       `;
+
+      document.getElementById('logout-link').addEventListener('click', function(e) {
+        e.preventDefault();
+        logout();
+      });
     } else if (role === 'admin') {
       container.innerHTML = `
         <div class="d-flex align-items-center">
