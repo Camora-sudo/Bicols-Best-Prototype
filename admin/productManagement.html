@@ -1,0 +1,555 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bicol's Best - Product Management</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Remix Icon -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --brand-red: #821b16;
+      --brand-red-hover: #661410;
+      --bg: #f8f9fa;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-muted: #78716c;
+      --border: #e7e5e4;
+      --radius: 8px;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      padding-bottom: 60px;
+    }
+
+    /* Page Heading */
+    .page-title {
+      color: var(--brand-red);
+      font-weight: 800;
+      font-size: 2.25rem;
+      margin-top: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Search & Button */
+    .search-input {
+      width: 260px;
+    }
+
+    .admin-btn {
+      background: var(--brand-red);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-weight: 600;
+    }
+
+    .admin-btn:hover {
+      background: var(--brand-red-hover);
+      color: white;
+    }
+
+    /* Product Table */
+    .table-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+
+    .product-table th {
+      font-weight: 800;
+    }
+
+    .product-table td,
+    .product-table th {
+      padding: 1rem;
+      vertical-align: middle;
+    }
+
+    .product-image {
+      width: 100px;
+      height: 120px;
+      object-fit: contain;
+    }
+
+    .product-name {
+      font-weight: 700;
+    }
+
+    .product-price {
+      color: var(--brand-red);
+      font-weight: 800;
+    }
+
+    .stock-number {
+      font-weight: 700;
+    }
+
+    /* Modal */
+    .modal-title {
+      color: var(--brand-red);
+      font-weight: 800;
+    }
+
+    .form-label {
+      font-weight: 700;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <div id="navbar-container"></div>
+
+  <!-- Main Content -->
+  <main class="container">
+
+    <!-- Heading -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+
+      <h1 class="page-title">
+        Product Inventory
+      </h1>
+
+      <button
+        class="admin-btn"
+        data-bs-toggle="modal"
+        data-bs-target="#productModal"
+        onclick="openAddProduct()">
+        ADD NEW PRODUCT
+      </button>
+
+    </div>
+
+    <!-- Search -->
+    <div class="mb-4">
+
+      <input
+        type="text"
+        id="searchInput"
+        class="form-control search-input"
+        placeholder="Search product..."
+        oninput="handleSearch()">
+
+    </div>
+
+    <!-- Product Table -->
+    <div class="table-container table-responsive">
+
+      <table class="table product-table mb-0">
+
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Product Name</th>
+            <th>SKU</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="productTableBody"></tbody>
+
+      </table>
+
+    </div>
+
+  </main>
+
+  <!-- Product Modal -->
+  <div
+    class="modal fade"
+    id="productModal"
+    tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+
+          <h5
+            class="modal-title"
+            id="productModalTitle">
+            ADD NEW PRODUCT
+          </h5>
+
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal">
+          </button>
+
+        </div>
+
+        <div class="modal-body">
+
+          <input
+            type="hidden"
+            id="productId">
+
+          <div class="mb-3">
+
+            <label class="form-label">
+              Product Name
+            </label>
+
+            <input
+              type="text"
+              id="productName"
+              class="form-control">
+
+          </div>
+
+          <div class="mb-3">
+
+            <label class="form-label">
+              SKU
+            </label>
+
+            <input
+              type="text"
+              id="productSku"
+              class="form-control">
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-md-6">
+
+              <label class="form-label">
+                Price
+              </label>
+
+              <input
+                type="number"
+                id="productPrice"
+                class="form-control">
+
+            </div>
+
+            <div class="col-md-6">
+
+              <label class="form-label">
+                Stock
+              </label>
+
+              <input
+                type="number"
+                id="productStock"
+                class="form-control">
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            CANCEL
+          </button>
+
+          <button
+            type="button"
+            class="admin-btn"
+            onclick="saveProduct()">
+            UPDATE
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Load external navbar HTML
+    fetch('navbar.html')
+      .then(response => response.text())
+      .then(data => {
+
+        document.getElementById('navbar-container').innerHTML = data;
+
+        const scripts = document
+          .getElementById('navbar-container')
+          .getElementsByTagName('script');
+
+        for (let i = 0; i < scripts.length; i++) {
+          eval(scripts[i].innerText);
+        }
+
+      })
+      .catch(err => console.error('Error loading navbar:', err));
+
+    // Products Data
+    const products = [
+      {
+        id: 1,
+        name: "Bicol's Best Bicol Express Pork – 210g",
+        sku: "BBST-BXPRK-210",
+        price: 220,
+        stock: 54320,
+        img: "../images/BE_Pork.png"
+      },
+      {
+        id: 2,
+        name: "Bicol's Best Bicol Express Tinapa – 210g",
+        sku: "BBST-BXTIN-210",
+        price: 220,
+        stock: 676767,
+        img: "../images/BE_Tinapa.png"
+      },
+      {
+        id: 3,
+        name: "Bicol's Best Laing Regular – 226g",
+        sku: "BBST-LNGREG-226",
+        price: 168,
+        stock: 120400,
+        img: "../images/Regular_Laing.png"
+      },
+      {
+        id: 4,
+        name: "Bicol's Best Laing Spicy – 226g",
+        sku: "BBST-LNGSPC-226",
+        price: 168,
+        stock: 120300,
+        img: "../images/Spicy_Laing.png"
+      },
+      {
+        id: 5,
+        name: "Bicol's Best Gulay na Santol Regular – 210g",
+        sku: "BBST-SNTREG-210",
+        price: 168,
+        stock: 227206,
+        img: "../images/Regular_Santol.png"
+      },
+      {
+        id: 6,
+        name: "Bicol's Best Gulay na Santol Spicy – 210g",
+        sku: "BBST-SNTSPC-210",
+        price: 168,
+        stock: 227206,
+        img: "../images/Spicy_Santol.png"
+      },
+      {
+        id: 7,
+        name: "Bicol's Best Bicol Chili Paste – 100g",
+        sku: "BBST-CHILI-100",
+        price: 168,
+        stock: 227206,
+        img: "../images/Chili_Paste.png"
+      }
+    ];
+
+    function renderProducts(items) {
+
+      const table =
+        document.getElementById('productTableBody');
+
+      if (items.length === 0) {
+
+        table.innerHTML = `
+          <tr>
+            <td
+              colspan="6"
+              class="text-center py-5 text-muted">
+
+              No products found matching your search.
+
+            </td>
+          </tr>
+        `;
+
+        return;
+      }
+
+      table.innerHTML = items.map(p => `
+
+        <tr>
+
+          <td>
+
+            <img
+              src="${p.img}"
+              alt="${p.name}"
+              class="product-image"
+              onerror="this.src='https://via.placeholder.com/100x120?text=Product'">
+
+          </td>
+
+          <td class="product-name">
+            ${p.name}
+          </td>
+
+          <td>
+            ${p.sku}
+          </td>
+
+          <td class="product-price">
+            ₱${p.price}
+          </td>
+
+          <td class="stock-number">
+            ${p.stock}
+          </td>
+
+          <td>
+
+            <button
+              class="admin-btn"
+              onclick="editProduct(${p.id})">
+              EDIT
+            </button>
+
+          </td>
+
+        </tr>
+
+      `).join('');
+    }
+
+    function handleSearch() {
+
+      const searchTerm =
+        document.getElementById('searchInput').value.toLowerCase();
+
+      const filtered = products.filter(p =>
+        p.name.toLowerCase().includes(searchTerm) ||
+        p.sku.toLowerCase().includes(searchTerm)
+      );
+
+      renderProducts(filtered);
+    }
+
+    function openAddProduct() {
+
+      document.getElementById('productModalTitle').innerText =
+        'ADD NEW PRODUCT';
+
+      document.getElementById('productId').value = '';
+      document.getElementById('productName').value = '';
+      document.getElementById('productSku').value = '';
+      document.getElementById('productPrice').value = '';
+      document.getElementById('productStock').value = '';
+
+    }
+
+    function editProduct(id) {
+
+      const product =
+        products.find(p => p.id === id);
+
+      if (!product) return;
+
+      document.getElementById('productModalTitle').innerText =
+        'EDIT PRODUCT';
+
+      document.getElementById('productId').value =
+        product.id;
+
+      document.getElementById('productName').value =
+        product.name;
+
+      document.getElementById('productSku').value =
+        product.sku;
+
+      document.getElementById('productPrice').value =
+        product.price;
+
+      document.getElementById('productStock').value =
+        product.stock;
+
+      bootstrap.Modal.getOrCreateInstance(
+        document.getElementById('productModal')
+      ).show();
+
+    }
+
+    function saveProduct() {
+
+      const id =
+        parseInt(document.getElementById('productId').value);
+
+      const name =
+        document.getElementById('productName').value.trim();
+
+      const sku =
+        document.getElementById('productSku').value.trim();
+
+      const price =
+        parseFloat(document.getElementById('productPrice').value);
+
+      const stock =
+        parseInt(document.getElementById('productStock').value);
+
+      if (!name || !sku || isNaN(price) || isNaN(stock)) {
+
+        alert('Please complete all product information.');
+
+        return;
+      }
+
+      if (id) {
+
+        const product =
+          products.find(p => p.id === id);
+
+        product.name = name;
+        product.sku = sku;
+        product.price = price;
+        product.stock = stock;
+
+      } else {
+
+        products.push({
+          id: products.length + 1,
+          name: name,
+          sku: sku,
+          price: price,
+          stock: stock,
+          img: "../images/BE_Pork.png"
+        });
+
+      }
+
+      renderProducts(products);
+
+      bootstrap.Modal.getOrCreateInstance(
+        document.getElementById('productModal')
+      ).hide();
+
+      alert('Product updated successfully.');
+    }
+
+    // Render Initial Products
+    renderProducts(products);
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+```
