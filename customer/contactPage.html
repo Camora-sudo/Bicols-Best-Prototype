@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+      body {
+        min-height: 100vh;
+        background-color: #f8f8f8;
+      }
+
+      .card-flat {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      }
+
+      .form-label-title {
+        text-align: center;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        margin-bottom: 1.5rem;
+      }
+
+      .contact-input {
+        border: 2px solid #222;
+        border-radius: 4px;
+        padding: 0.6rem 0.9rem;
+      }
+
+      .contact-input::placeholder,
+      .contact-input {
+        color: #821b16;
+        font-weight: 600;
+      }
+
+      .contact-input:focus {
+        border-color: #6f42c1;
+        box-shadow: 0 0 0 0.15rem rgba(111, 66, 193, 0.25);
+        color: #821b16;
+      }
+
+      textarea.contact-input {
+        resize: vertical;
+        min-height: 200px !important;
+        height: 200px;
+      }
+
+      button.btn-refund {
+        background-color: #821b16 !important;
+        color: #fff !important;
+        font-weight: 600;
+        border: none;
+        padding: 0.6rem 2rem;
+      }
+
+      button.btn-refund:hover {
+        background-color: #6b1512 !important;
+        color: #fff !important;
+      }
+
+      .contact-info-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2.5rem;
+        margin-top: 1.5rem;
+      }
+
+      .contact-info-item {
+        display: flex;
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      .contact-info-item i {
+        font-size: 1.3rem;
+        color: #821b16;
+        margin-right: 0.9rem;
+        margin-top: 0.15rem;
+      }
+
+      .contact-info-item span {
+        color: #444;
+        line-height: 1.4;
+      }
+
+      .social-icons a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        background-color: #821b16;
+        color: #fff;
+        font-size: 1.6rem;
+        margin: 0 0.5rem;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+      }
+
+      .social-icons a:hover {
+        background-color: #6b1512;
+      }
+    </style>
+</head>
+<body>
+    <!-- Navbar gets injected here -->
+    <div id="navbar-placeholder"></div>
+
+    <script>
+    // TEST ONLY simulates a logged-in user; palitan nyo nalang role to user or admin
+    document.cookie = "role=user; path=/; max-age=86400";
+    </script>
+
+    <div class="container-fluid px-5 py-5">
+      <!-- Contact Info (half width, centered) -->
+      <div class="row g-4 mb-4">
+        <div class="col-lg-6 offset-lg-3">
+          <div class="card card-flat h-100">
+            <div class="card-body p-4 text-center">
+              <h6 class="fw-bold mb-2">Contact Information</h6>
+              <p class="text-muted mx-auto mb-0" style="max-width: 600px;">
+                Have a question about your order, our products, or anything else? We'd love to hear from you!
+              </p>
+
+              <div class="contact-info-grid">
+                <div class="contact-info-item">
+                  <i class="ri-map-pin-line"></i>
+                  <span>HML Foods Corporation<br>Bicol Region, Philippines</span>
+                </div>
+
+                <div class="contact-info-item">
+                  <i class="ri-phone-line"></i>
+                  <span>09988645965</span>
+                </div>
+
+                <div class="contact-info-item">
+                  <i class="ri-mail-line"></i>
+                  <span>sales01@hmlfoods.com</span>
+                </div>
+              </div>
+
+              <div class="social-icons mt-4 d-flex justify-content-center">
+                <a href="https://www.facebook.com/bicolsbestph" aria-label="Facebook" target="_blank"><i class="ri-facebook-fill"></i></a>
+                <a href="https://www.instagram.com/bicolsbestph" aria-label="Instagram" target="_blank"><i class="ri-instagram-line"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message Form (full width, taller) -->
+      <div class="card card-flat mb-4">
+        <div class="card-body p-5">
+          <h6 class="form-label-title fs-5">Send us a message</h6>
+
+          <form id="contactForm">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <input type="text" class="form-control contact-input" id="contactName" placeholder="name" required>
+              </div>
+
+              <div class="col-md-6">
+                <input type="email" class="form-control contact-input" id="contactEmail" placeholder="email" required>
+              </div>
+
+              <div class="col-12">
+                <textarea class="form-control contact-input" id="contactMessage" rows="10" placeholder="message" required></textarea>
+              </div>
+
+              <div class="col-12 d-flex justify-content-end">
+                <button type="submit" class="btn btn-refund">Send</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;">
+      <div id="contactToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #821b16;">
+        <div class="d-flex">
+          <div class="toast-body">
+            Your message has been sent.
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+        fetch('../navbar.html')
+        .then(res => res.text())
+        .then(html => {
+            const placeholder = document.getElementById('navbar-placeholder');
+            placeholder.innerHTML = html;
+
+            const oldScripts = placeholder.querySelectorAll('script');
+            oldScripts.forEach(oldScript => {
+            const newScript = document.createElement('script');
+            if (oldScript.src) {
+                newScript.src = oldScript.src;
+            } else {
+                newScript.textContent = oldScript.textContent;
+            }
+            document.body.appendChild(newScript);
+            });
+        });
+
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          const name = document.getElementById('contactName').value;
+          const email = document.getElementById('contactEmail').value;
+          const message = document.getElementById('contactMessage').value;
+
+          if (!name || !email || !message) {
+            alert('Please fill in all fields before sending.');
+            return;
+          }
+
+          // TODO: replace with real submission (fetch/POST to your backend)
+          console.log({ name, email, message });
+
+          // Reset form
+          document.getElementById('contactForm').reset();
+
+          // Show toast confirmation
+          const toastEl = document.getElementById('contactToast');
+          const toast = new bootstrap.Toast(toastEl);
+          toast.show();
+        });
+    </script>
+</body>
+</html>

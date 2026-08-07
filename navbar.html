@@ -15,6 +15,20 @@
       <!-- filled in by JS -->
     </div>
   </div>
+
+  <style>
+    #navbar-content .nav-link {
+    transition: color 0.2s ease, opacity 0.2s ease;
+    }
+
+    #navbar-content .nav-link:hover {
+      opacity: 0.8;
+    }
+
+    #navbar-content .nav-link.active {
+      font-weight: 700;
+    }
+    </style>
 </header>
 
 <script>
@@ -89,7 +103,22 @@
     window.location.href = `${URL}/index.html`;
   }
 
+  function highlightCurrentPage() {
+  const currentPage = window.location.pathname.split('/').pop();
+
+  document.querySelectorAll('#navbar-content .nav-link').forEach(link => {
+    const linkPage = link.getAttribute('href').split('/').pop();
+
+    if (linkPage === currentPage) {
+      link.classList.add('active');
+    }
+  });
+}
+
+  highlightCurrentPage();
+
   renderNavbar();
+
 </script>
 
 </body>
