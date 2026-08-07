@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bicol's Best - Checkout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: sans-serif; background-color: #F5F6F5; }
+        .brand-text { font-family: serif; }
+        /* Custom styled radio buttons */
+        input[type="radio"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2.5px solid black;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+        }
+        input[type="radio"]::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em #8A1C14;
+        }
+        input[type="radio"]:checked {
+            border-color: #8A1C14;
+        }
+        input[type="radio"]:checked::before {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="text-black min-h-screen">
+
+    <!-- Navigation Bar -->
+    <header class="bg-[#8A1C14] text-white px-8 py-3 flex justify-between items-center sticky top-0 z-50 shadow-md">
+        <div class="flex flex-col items-center">
+            <div class="border-[1.5px] border-white rounded-[2rem] px-5 py-1 bg-[#E21818] shadow-sm">
+                <h1 class="brand-text text-2xl font-bold italic tracking-wider">Bicol's Best<sup class="text-xs">&reg;</sup></h1>
+            </div>
+            <p class="text-[10px] mt-1 italic tracking-wide">Traditionally made... Authentic!</p>
+        </div>
+        <nav class="flex items-center gap-8 text-sm font-medium">
+            <a href="productDetails.html" class="hover:underline underline-offset-4 decoration-2">Products</a>
+            <a href="#" class="hover:underline underline-offset-4">Profile</a>
+            <a href="#" class="hover:underline underline-offset-4">Contact Us</a>
+            <a href="shopping_cart.html" class="relative hover:scale-105 transition-transform">
+                <i data-lucide="shopping-cart" class="w-7 h-7"></i>
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-5xl mx-auto py-10 px-4 relative">
+        <a href="shopping_cart.html" class="absolute top-10 left-4 text-sm font-bold text-[#8A1C14] hover:underline flex items-center gap-1">
+            &larr; Back to Cart
+        </a>
+        <h2 class="text-3xl font-bold text-center mb-8 tracking-wide mt-8">Checkout & Payment</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- Left Column: Forms -->
+            <div class="flex flex-col gap-6">
+                <!-- Delivery Option -->
+                <div class="bg-white shadow-lg p-8 h-[370px]">
+                    <h3 class="font-bold text-lg mb-6 uppercase text-black">DELIVERY OPTION</h3>
+                    
+                    <div class="flex flex-col gap-4 mb-6 font-bold text-[15px] text-[#8A1C14]">
+                        <label class="flex items-start cursor-pointer">
+                            <input type="radio" name="delivery_mode" value="pickup" onchange="toggleDelivery()">
+                            <div class="flex flex-col -mt-1">
+                                <span>STORE PICKUP</span>
+                                <span class="italic text-sm font-normal">Address.........</span>
+                            </div>
+                        </label>
+                        
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="delivery_mode" value="delivery" checked onchange="toggleDelivery()">
+                            <span>DELIVERY</span>
+                        </label>
+                    </div>
+
+                    <!-- Input Fields -->
+                    <div class="flex flex-col gap-3">
+                        <input type="text" id="address" placeholder="SHIPPING ADDRESS" class="w-full border-[2px] border-black p-2 font-bold text-[#8A1C14] placeholder-[#8A1C14] text-sm focus:outline-none focus:border-[#751A1A]" />
+                        <div class="grid grid-cols-2 gap-3">
+                            <input type="text" id="name" placeholder="NAME" class="w-full border-[2px] border-black p-2 font-bold text-[#8A1C14] placeholder-[#8A1C14] text-sm focus:outline-none focus:border-[#751A1A]" />
+                            <input type="email" id="email" placeholder="EMAIL" class="w-full border-[2px] border-black p-2 font-bold text-[#8A1C14] placeholder-[#8A1C14] text-sm focus:outline-none focus:border-[#751A1A]" />
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <input type="text" id="number" placeholder="NUMBER" class="w-full border-[2px] border-black p-2 font-bold text-[#8A1C14] placeholder-[#8A1C14] text-sm focus:outline-none focus:border-[#751A1A]" />
+                            <input type="text" id="postal" placeholder="POSTAL CODE" class="w-full border-[2px] border-black p-2 font-bold text-[#8A1C14] placeholder-[#8A1C14] text-sm focus:outline-none focus:border-[#751A1A]" />
+                        </div>
+                        <p id="error-msg" class="text-red-600 text-[11px] font-bold mt-1 hidden">* Please fill out all required fields.</p>
+                    </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="bg-white shadow-lg p-8">
+                    <h3 class="font-bold text-lg mb-6 uppercase text-black">PAYMENT METHOD</h3>
+                    <div class="flex flex-col gap-4 font-bold text-[15px] text-[#8A1C14]">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="payment_mode" value="cod" checked>
+                            <span>CASH ON DELIVERY</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="payment_mode" value="ewallet">
+                            <span>E-WALLET/CARD ETC...</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Summary -->
+            <div class="bg-white shadow-lg p-8 relative flex flex-col h-[370px]">
+                <h3 class="font-bold text-lg mb-6 uppercase text-black">ORDER SUMMARY</h3>
+                
+                <div class="flex flex-col gap-3 font-bold text-[15px] mb-8 text-black">
+                    <div class="flex justify-between">
+                        <span>Subtotal :</span>
+                        <span id="summary-subtotal">0.00 ₱</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Shipping :</span>
+                        <span id="shipping-fee">50.00 ₱</span>
+                    </div>
+                    
+                    <div class="border-t-[3px] border-gray-400 my-4"></div>
+                    
+                    <div class="flex justify-between text-lg">
+                        <span>Total :</span>
+                        <span id="total-price">0.00 ₱</span>
+                    </div>
+                </div>
+
+                <button onclick="placeOrder()" class="absolute bottom-8 right-8 bg-[#8A1C14] hover:bg-[#6b150f] text-white font-bold px-8 py-3 rounded-full transition-colors shadow-md uppercase tracking-wide text-lg">
+                    PLACE ORDER
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success Modal Overlay -->
+    <div id="success-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+        <div class="bg-white p-12 text-center shadow-xl rounded-lg max-w-lg mx-4">
+            <h2 class="text-3xl font-bold text-[#8A1C14] mb-4">Order Placed Successfully!</h2>
+            <p class="mb-8 font-medium text-gray-700">Thank you for ordering with Bicol's Best.</p>
+            <button onclick="clearCartAndReturn()" class="bg-[#751A1A] hover:bg-[#5a1414] text-white px-8 py-3 rounded-full font-bold transition-colors shadow-sm">
+                Return to Shop
+            </button>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Calculate Subtotal dynamically from localStorage cart data
+        let cartSubtotal = 0;
+        let deliveryFee = 50.00;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cartSubtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            document.getElementById('summary-subtotal').innerText = cartSubtotal.toFixed(2) + ' ₱';
+            updateTotals();
+        });
+
+        function updateTotals() {
+            const totalPrice = cartSubtotal + deliveryFee;
+            document.getElementById('shipping-fee').innerText = deliveryFee.toFixed(2) + ' ₱';
+            document.getElementById('total-price').innerText = totalPrice.toFixed(2) + ' ₱';
+        }
+
+        // Dynamic Shipping Logic
+        function toggleDelivery() {
+            const isDelivery = document.querySelector('input[name="delivery_mode"]:checked').value === 'delivery';
+            const addressInput = document.getElementById('address');
+            const postalInput = document.getElementById('postal');
+            
+            if (isDelivery) {
+                addressInput.disabled = false;
+                postalInput.disabled = false;
+                addressInput.classList.remove('opacity-50', 'bg-gray-100');
+                postalInput.classList.remove('opacity-50', 'bg-gray-100');
+                addressInput.placeholder = "SHIPPING ADDRESS";
+                postalInput.placeholder = "POSTAL CODE";
+                
+                deliveryFee = 50.00;
+            } else {
+                addressInput.disabled = true;
+                postalInput.disabled = true;
+                addressInput.classList.add('opacity-50', 'bg-gray-100');
+                postalInput.classList.add('opacity-50', 'bg-gray-100');
+                addressInput.placeholder = "N/A (STORE PICKUP)";
+                postalInput.placeholder = "N/A";
+                addressInput.style.borderColor = "black";
+                postalInput.style.borderColor = "black";
+                
+                deliveryFee = 0.00;
+            }
+            updateTotals();
+        }
+
+        // Form Validation & Submit
+        function placeOrder() {
+            const name = document.getElementById('name');
+            const email = document.getElementById('email');
+            const number = document.getElementById('number');
+            const address = document.getElementById('address');
+            const postal = document.getElementById('postal');
+            const errorMsg = document.getElementById('error-msg');
+            const isDelivery = document.querySelector('input[name="delivery_mode"]:checked').value === 'delivery';
+
+            let isValid = true;
+            
+            // Helper function to mark invalid fields
+            const validateField = (field) => {
+                if (field.value.trim() === '') {
+                    field.style.borderColor = 'red';
+                    field.style.backgroundColor = '#FEF2F2'; // red-50
+                    isValid = false;
+                } else {
+                    field.style.borderColor = 'black';
+                    field.style.backgroundColor = 'white';
+                }
+            };
+
+            validateField(name);
+            validateField(email);
+            validateField(number);
+
+            if (isDelivery) {
+                validateField(address);
+                validateField(postal);
+            }
+
+            if (!isValid) {
+                errorMsg.classList.remove('hidden');
+            } else {
+                errorMsg.classList.add('hidden');
+                // Show Success Modal
+                document.getElementById('success-modal').classList.remove('hidden');
+                document.getElementById('success-modal').classList.add('flex');
+            }
+        }
+        
+        // Clear cart upon successful order
+        function clearCartAndReturn() {
+            localStorage.removeItem('cart');
+            window.location.href = 'productDetails.html';
+        }
+
+        // Reset styles on input
+        document.querySelectorAll('input[type="text"], input[type="email"]').forEach(input => {
+            input.addEventListener('input', function() {
+                this.style.borderColor = 'black';
+                this.style.backgroundColor = 'white';
+            });
+        });
+    </script>
+</body>
+</html>

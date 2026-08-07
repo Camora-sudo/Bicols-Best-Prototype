@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bicol's Best - Shopping Cart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: sans-serif; background-color: #F5F6F5; }
+        .brand-text { font-family: serif; }
+    </style>
+</head>
+<body class="text-black min-h-screen relative pb-20">
+
+    <!-- Navigation Bar -->
+    <header class="bg-[#8A1C14] text-white px-8 py-3 flex justify-between items-center sticky top-0 z-50 shadow-md">
+        <div class="flex flex-col items-center">
+            <div class="border-[1.5px] border-white rounded-[2rem] px-5 py-1 bg-[#E21818] shadow-sm">
+                <h1 class="brand-text text-2xl font-bold italic tracking-wider">Bicol's Best<sup class="text-xs">&reg;</sup></h1>
+            </div>
+            <p class="text-[10px] mt-1 italic tracking-wide">Traditionally made... Authentic!</p>
+        </div>
+        
+        <nav class="flex items-center gap-8 text-sm font-medium">
+            <a href="productDetails.html" class="hover:underline underline-offset-4 decoration-2">Products</a>
+            <a href="#" class="hover:underline underline-offset-4">Profile</a>
+            <a href="#" class="hover:underline underline-offset-4">Contact Us</a>
+            <a href="shoppingCart.html" class="relative hover:scale-105 transition-transform">
+                <i data-lucide="shopping-cart" class="w-7 h-7"></i>
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto py-10 px-4">
+        <h2 class="text-3xl font-bold text-center mb-8 tracking-wide">Your Shopping Cart</h2>
+        
+        <div class="bg-white shadow-lg relative pb-24">
+            <!-- Table Header -->
+            <div class="grid grid-cols-12 gap-4 px-8 py-4 border-b-2 border-black font-bold text-[15px]">
+                <div class="col-span-5">Product</div>
+                <div class="col-span-2 text-center">Unit Price</div>
+                <div class="col-span-3 text-center">Quantity</div>
+                <div class="col-span-2 text-center">Subtotal</div>
+            </div>
+
+            <!-- Cart Items Container (Dynamically Populated) -->
+            <div id="cart-items" class="px-8 min-h-[150px]">
+                <!-- Items will be injected here via JavaScript -->
+            </div>
+
+            <!-- Total & Checkout Box -->
+            <div class="absolute -bottom-4 -right-4 bg-white shadow-md border border-gray-200 p-6 flex flex-col gap-4 w-[320px]">
+                <div class="flex justify-between items-center font-bold text-[15px]">
+                    <span>Total :</span>
+                    <span id="cart-total">0.00 ₱</span>
+                </div>
+                <!-- Link to Checkout Page -->
+                <button onclick="window.location.href='checkout.html'" id="checkout-btn" class="w-full bg-[#751A1A] hover:bg-[#5a1414] text-white font-medium py-3 rounded-full transition-colors shadow-sm">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Fetch cart data from localStorage that was saved by productDetails.html
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function renderCart() {
+            const cartContainer = document.getElementById('cart-items');
+            cartContainer.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                cartContainer.innerHTML = '<div class="py-12 text-center text-gray-500 font-medium text-lg italic">Your cart is empty. <br><a href="productDetails.html" class="text-[#8A1C14] hover:underline mt-2 inline-block not-italic">Browse Products</a></div>';
+                document.getElementById('cart-total').innerText = '0.00 ₱';
+                
+                const checkoutBtn = document.getElementById('checkout-btn');
+                checkoutBtn.disabled = true;
+                checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+                checkoutBtn.classList.remove('bg-[#751A1A]', 'hover:bg-[#5a1414]');
+                return;
+            }
+
+            cart.forEach((item, index) => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                
+                // Don't add bottom border to the last item
+                const borderClass = index !== cart.length - 1 ? 'border-b border-gray-400' : '';
+
+                const itemHTML = `
+                    <div class="cart-item grid grid-cols-12 gap-4 items-center py-6 ${borderClass}">
+                        <div class="col-span-5 flex items-center gap-4">
+                            <div class="w-20 h-24 bg-gray-100 p-1 border border-gray-200 flex-shrink-0 shadow-sm">
+                                <img src="${item.img}" alt="${item.name}" onerror="this.src='../images/logo.png'" class="w-full h-full object-cover" />
+                            </div>
+                            <span class="font-bold text-sm pr-4 leading-tight">${item.name}</span>
+                        </div>
+                        <div class="col-span-2 text-center font-bold text-[#8A1C14]">${item.price.toFixed(2)} ₱</div>
+                        <div class="col-span-3 flex justify-center">
+                            <div class="flex items-center gap-6 border-[1.5px] border-black rounded-full px-4 py-1.5 w-32 justify-between">
+                                <button onclick="updateQuantity(${item.id}, -1)" class="hover:text-gray-500"><i data-lucide="minus" class="w-4 h-4 stroke-[3]"></i></button>
+                                <span class="font-medium text-sm">${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.id}, 1)" class="hover:text-gray-500"><i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-span-2 flex items-center justify-between pr-4">
+                            <span class="font-bold text-[#8A1C14]">${subtotal.toFixed(2)} ₱</span>
+                            <button onclick="removeItem(${item.id})" class="text-black hover:text-red-600 transition-colors"><i data-lucide="x" class="w-7 h-7 stroke-[2.5]"></i></button>
+                        </div>
+                    </div>
+                `;
+                cartContainer.insertAdjacentHTML('beforeend', itemHTML);
+            });
+
+            // Update Total and enable checkout
+            document.getElementById('cart-total').innerText = total.toFixed(2) + ' ₱';
+            const checkoutBtn = document.getElementById('checkout-btn');
+            checkoutBtn.disabled = false;
+            checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+            checkoutBtn.classList.add('bg-[#751A1A]', 'hover:bg-[#5a1414]');
+            
+            // Re-initialize icons for newly injected HTML
+            lucide.createIcons();
+        }
+
+        function updateQuantity(id, change) {
+            const itemIndex = cart.findIndex(item => item.id === id);
+            if (itemIndex > -1) {
+                const newQty = cart[itemIndex].quantity + change;
+                if (newQty >= 1) {
+                    cart[itemIndex].quantity = newQty;
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    renderCart();
+                }
+            }
+        }
+
+        function removeItem(id) {
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        // Render cart on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCart();
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
