@@ -88,7 +88,7 @@
                   <th>Details</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="purchasesTableBody">
                 <tr>
                   <td>#5431</td>
                   <td>August 7, 2026</td>
@@ -150,7 +150,7 @@
     </div>
   </div>
 
-  <!-- Order Modal -->
+  <!-- Order Modal (Static Details) -->
   <div class="modal fade" id="Order5431" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -161,6 +161,8 @@
         <div class="modal-body">
           <p><strong>Date:</strong> August 7, 2026</p>
           <p><strong>Status:</strong> Delivered</p>
+          <p><strong>Delivery:</strong> Delivery</p>
+          <p><strong>Payment:</strong> Cash on Delivery</p>
 
           <p class="mb-1"><strong>Items:</strong></p>
           <ul class="list-unstyled mb-3">
@@ -175,6 +177,12 @@
           </ul>
 
           <hr>
+          <p class="d-flex justify-content-between mb-1">
+            <span>Subtotal</span><span>₱550.00</span>
+          </p>
+          <p class="d-flex justify-content-between mb-1">
+            <span>Shipping</span><span>₱50.00</span>
+          </p>
           <p class="d-flex justify-content-between fw-bold mb-0">
             <span>Total</span>
             <span>₱600.00</span>
@@ -233,6 +241,8 @@
     </div>
   </div>
 
+  <div id="dynamicModals"></div>
+
   <!-- Refund Toast Notification -->
   <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;">
     <div id="refundToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #821b16;">
@@ -269,6 +279,73 @@
       const toast = new bootstrap.Toast(toastEl);
       toast.show();
     });
+
+    document.addEventListener('DOMContentLoaded', () => {
+    renderCheckedOutOrders();
+});
+
+function renderCheckedOutOrders() {
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    if (orders.length === 0) return;
+
+    const tbody = document.getElementById('purchasesTableBody');
+    const modalsContainer = document.getElementById('dynamicModals');
+
+    orders.forEach(order => {
+        const modalId = 'modal-' + order.id;
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${order.displayId}</td>
+            <td>${order.date}</td>
+            <td>${order.status}</td>
+            <td><a href="#" class="link-red" data-bs-toggle="modal" data-bs-target="#${modalId}">[Details]</a></td>
+        `;
+        tbody.insertBefore(row, tbody.firstChild);
+
+        const itemsHTML = order.items.map(item => `
+            <li class="d-flex justify-content-between">
+                <span>${item.name}</span>
+                <span>x${item.quantity}</span>
+            </li>
+        `).join('');
+
+        const modalHTML = `
+            <div class="modal fade" id="${modalId}" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Order ${order.displayId}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p><strong>Date:</strong> ${order.date}</p>
+                    <p><strong>Status:</strong> ${order.status}</p>
+                    <p><strong>Delivery:</strong> ${order.deliveryMode}</p>
+                    <p><strong>Payment:</strong> ${order.paymentMode}</p>
+                    <p class="mb-1"><strong>Items:</strong></p>
+                    <ul class="list-unstyled mb-3">${itemsHTML}</ul>
+                    <hr>
+                    <p class="d-flex justify-content-between mb-1">
+                      <span>Subtotal</span><span>₱${order.subtotal.toFixed(2)}</span>
+                    </p>
+                    <p class="d-flex justify-content-between mb-1">
+                      <span>Shipping</span><span>₱${order.shipping.toFixed(2)}</span>
+                    </p>
+                    <p class="d-flex justify-content-between fw-bold mb-0">
+                      <span>Total</span><span>₱${order.total.toFixed(2)}</span>
+                    </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        `;
+        modalsContainer.insertAdjacentHTML('beforeend', modalHTML);
+    });
+  }
   </script>
 </body>
 </html>

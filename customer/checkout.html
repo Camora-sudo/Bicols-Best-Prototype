@@ -248,9 +248,46 @@
                 errorMsg.classList.remove('hidden');
             } else {
                 errorMsg.classList.add('hidden');
+                saveOrder(isDelivery); 
                 document.getElementById('success-modal').classList.remove('hidden');
                 document.getElementById('success-modal').classList.add('flex');
             }
+        }
+
+        // NEW FUNCTION 
+        function saveOrder(isDelivery) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const paymentMode = document.querySelector('input[name="payment_mode"]:checked').value;
+            const totalPrice = cartSubtotal + deliveryFee;
+
+            const order = {
+                id: 'order_' + Date.now(),
+                displayId: '#' + Math.floor(1000 + Math.random() * 9000),
+                date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+                status: 'Processing',
+                deliveryMode: isDelivery ? 'Delivery' : 'Store Pickup',
+                paymentMode: paymentMode === 'cod' ? 'Cash on Delivery' : 'E-Wallet/Card',
+                customer: {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    number: document.getElementById('number').value,
+                    address: isDelivery ? document.getElementById('address').value : 'N/A (Store Pickup)',
+                    postal: isDelivery ? document.getElementById('postal').value : 'N/A'
+                },
+                items: cart.map(item => ({
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                    img: item.img
+                })),
+                subtotal: cartSubtotal,
+                shipping: deliveryFee,
+                total: totalPrice
+            };
+
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.unshift(order); // newest first
+            localStorage.setItem('orders', JSON.stringify(orders));
         }
         
         function clearCartAndReturn() {
