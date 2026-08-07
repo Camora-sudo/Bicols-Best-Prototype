@@ -28,7 +28,7 @@
     #navbar-content .nav-link.active {
       font-weight: 700;
     }
-    </style>
+  </style>
 </header>
 
 <script>
@@ -72,12 +72,37 @@
         e.preventDefault();
         logout();
       });
+    } else if (role === 'reseller') {
+      container.innerHTML = `
+        <div class="d-flex align-items-center">
+          <a href="${URL}/customer/productCatalogue.html" class="d-flex align-items-center text-white text-decoration-none">
+            <img src="${URL}/images/logo.png" width="130" class="d-inline-block align-text-top" alt="Bicol's Best">
+            <span class="fw-bold fs-5 d-none d-md-inline mx-3">Bicol's Best Served Online <span class="badge bg-warning text-dark ms-2 align-middle fs-6" style="vertical-align: text-bottom;">Reseller</span></span>
+          </a>
+        </div>
+        <div class="d-flex align-items-center">
+          <nav class="d-none d-md-flex align-items-center me-4">
+            <a href="${URL}/customer/productCatalogue.html" class="nav-link text-white mx-3">Products</a>
+            <a href="${URL}/customer/userProfile.html" class="nav-link text-white mx-3">Profile</a>
+            <a href="${URL}/customer/contactPage.html" class="nav-link text-white mx-3">Contact Us</a>
+            <a href="#" id="logout-link" class="nav-link text-white mx-3 me-4">Logout</a>
+            <a href="${URL}/customer/shoppingCart.html" class="text-white fs-3">
+              <i class="ri-shopping-cart-2-line"></i>
+            </a>
+          </nav>
+        </div>
+      `;
+
+      document.getElementById('logout-link').addEventListener('click', function(e) {
+        e.preventDefault();
+        logout();
+      });
     } else if (role === 'admin') {
       container.innerHTML = `
         <div class="d-flex align-items-center">
           <a href="${URL}/admin/dashboard.html" class="d-flex align-items-center text-white text-decoration-none">
             <img src="${URL}/images/logo.png" width="130" class="d-inline-block align-text-top" alt="Bicol's Best">
-            <span class="fw-bold fs-5 d-none d-md-inline mx-3">Bicol's Best Served Online</span>
+            <span class="fw-bold fs-5 d-none d-md-inline mx-3">Bicol's Best Served Online <span class="badge bg-info text-dark ms-2 align-middle fs-6" style="vertical-align: text-bottom;">Admin</span></span>
           </a>
         </div>
         <div class="d-flex align-items-center">
@@ -95,8 +120,7 @@
         e.preventDefault();
         logout();
       });
-    }
-    else {
+    } else {
       container.innerHTML = `
         <div class="d-flex align-items-center">
           <a href="${URL}/customer/productCatalogue.html" class="d-flex align-items-center text-white text-decoration-none">
@@ -107,38 +131,32 @@
         <div class="d-flex align-items-center">
           <nav class="d-none d-md-flex align-items-center me-4">
             <a href="${URL}/customer/productCatalogue.html" class="nav-link text-white mx-3">Products</a>
-            <a href="${URL}/public/login.html" class="text-white fs-3"></a>
+            <a href="${URL}/public/login.html" class="text-white fs-3"><i class="ri-login-box-line"></i></a>
           </nav>
         </div>
       `;
-
-      document.getElementById('logout-link').addEventListener('click', function(e) {
-        e.preventDefault();
-        logout();
-      });
     }
   }
 
   function logout() {
     deleteCookie('role');
-    window.location.href = `${URL}/index.html`;
+    window.location.href = `${URL}/index.html`; // Update this if your login is elsewhere!
   }
 
   function highlightCurrentPage() {
-  const currentPage = window.location.pathname.split('/').pop();
+    const currentPage = window.location.pathname.split('/').pop();
 
-  document.querySelectorAll('#navbar-content .nav-link').forEach(link => {
-    const linkPage = link.getAttribute('href').split('/').pop();
+    document.querySelectorAll('#navbar-content .nav-link').forEach(link => {
+      const linkPage = link.getAttribute('href').split('/').pop();
 
-    if (linkPage === currentPage) {
-      link.classList.add('active');
-    }
-  });
-}
-
-  highlightCurrentPage();
+      if (linkPage === currentPage) {
+        link.classList.add('active');
+      }
+    });
+  }
 
   renderNavbar();
+  highlightCurrentPage();
 
 </script>
 

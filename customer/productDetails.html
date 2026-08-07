@@ -1,205 +1,286 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bicol's Best - Product Details</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        body { font-family: sans-serif; background-color: #F5F6F5; }
-        .brand-text { font-family: serif; }
-        
-        /* Custom styling for the quantity input to remove arrows */
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bicol's Best - Product Details</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Remix Icon -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --brand-red: #821b16;
+      --brand-red-hover: #661410;
+      --bg: #f8f9fa;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --radius: 16px;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      padding-bottom: 60px;
+    }
+
+    .back-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      transition: color 0.2s;
+    }
+    
+    .back-link:hover {
+      color: var(--text);
+    }
+
+    .product-container {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      padding: 2rem;
+    }
+
+    .product-image {
+      width: 100%;
+      border-radius: var(--radius);
+      object-fit: cover;
+      background: var(--bg);
+    }
+
+    .product-brand {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
+    .product-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0.5rem 0 1rem;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--brand-red);
+    }
+
+    .qty-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .qty-btn:hover {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+
+    .qty-input {
+      width: 60px;
+      text-align: center;
+      border: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      background: transparent;
+    }
+
+    .btn-add-cart {
+      background: var(--brand-red);
+      color: white;
+      border: none;
+      border-radius: 9999px;
+      padding: 0.75rem 2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background-color 0.2s;
+    }
+
+    .btn-add-cart:hover {
+      background: var(--brand-red-hover);
+    }
+
+    .sku-block, .spec-block {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .product-description {
+      margin-top: 1.5rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    .reviews-link {
+      color: var(--brand-red);
+      text-decoration: underline;
+      font-weight: 500;
+      cursor: pointer;
+    }
+  </style>
 </head>
-<body class="text-black min-h-screen relative">
+<body>
 
-    <!-- Navigation Bar (Hardcoded to guarantee it works locally) -->
-    <header class="bg-[#8A1C14] text-white px-8 py-3 flex justify-between items-center sticky top-0 z-50 shadow-md">
-        <div class="flex flex-col items-center">
-            <div class="border-[1.5px] border-white rounded-[2rem] px-5 py-1 bg-[#E21818] shadow-sm">
-                <h1 class="brand-text text-2xl font-bold italic tracking-wider">Bicol's Best<sup class="text-xs">&reg;</sup></h1>
-            </div>
-            <p class="text-[10px] mt-1 italic tracking-wide">Traditionally made... Authentic!</p>
-        </div>
-        
-        <nav class="flex items-center gap-8 text-sm font-medium">
-            <a href="productDetails.html" class="hover:underline underline-offset-4 decoration-2">Products</a>
-            <a href="#" class="hover:underline underline-offset-4">Profile</a>
-            <a href="#" class="hover:underline underline-offset-4">Contact Us</a>
-            <!-- Direct link to the Shopping Cart -->
-            <a href="shoppingCart.html" class="relative hover:scale-105 transition-transform">
-                <i data-lucide="shopping-cart" class="w-7 h-7"></i>
-            </a>
-        </nav>
-    </header>
+  <!-- Navbar Placeholder -->
+  <div id="navbar-placeholder"></div>
 
-    <!-- Main Content -->
-    <main class="max-w-5xl mx-auto py-16 px-4">
-        
-        <!-- Main White Card Container -->
-        <div class="bg-white shadow-lg p-10 flex flex-col md:flex-row gap-12 relative max-w-4xl mx-auto">
-            
-            <!-- Left Column: Product Image -->
-            <div class="w-full md:w-[40%] flex justify-center items-center bg-[#F8F8F8] p-4 border border-gray-100 shadow-inner min-h-[400px]">
-                <img id="prod-image" src="../images/BE_Tinapa.png" alt="Bicol Express Tinapa" class="w-full h-auto object-contain max-h-[350px]" />
-            </div>
-
-            <!-- Right Column: Product Details -->
-            <div class="w-full md:w-[60%] flex flex-col pt-2">
-                <span id="prod-brand" class="text-sm font-medium mb-2">Bicol's Best</span>
-                
-                <h1 id="prod-name" class="text-2xl font-bold leading-snug mb-4">
-                    Bicol's Best Bicol Express Tinapa -<br/>24/210g
-                </h1>
-
-                <div class="flex items-baseline gap-4 mb-4">
-                    <span id="prod-price" class="text-2xl font-bold text-[#8A1C14]">200.00 ₱</span>
-                    <span id="prod-stock-info" class="text-[11px] font-medium text-gray-600 italic">
-                        676767 left &nbsp;&nbsp; MOQ for reseller : 50
-                    </span>
-                </div>
-
-                <div class="mb-2 font-medium text-[15px]">Quantity</div>
-                
-                <div class="flex items-center gap-4 mb-6">
-                    <!-- Quantity Modifier -->
-                    <div class="flex items-center justify-between border-[2px] border-black rounded-full px-4 py-1.5 w-32">
-                        <button onclick="updateQty(-1)" class="text-black font-bold text-lg hover:text-gray-600 transition-colors">&minus;</button>
-                        <input type="number" id="qtyInput" value="1" readonly class="w-10 text-center bg-transparent font-bold text-sm focus:outline-none" />
-                        <button onclick="updateQty(1)" class="text-black font-bold text-lg hover:text-gray-600 transition-colors">&plus;</button>
-                    </div>
-
-                    <!-- Add to Cart Button -->
-                    <button onclick="addToCart()" class="bg-[#8A1C14] hover:bg-[#6b150f] text-white font-medium px-8 py-2 rounded-full transition-colors shadow-sm tracking-wide">
-                        Add to Cart
-                    </button>
-                </div>
-
-                <div id="prod-sku" class="text-[13px] font-medium mb-1">BBST-BXTIN-210</div>
-                <div id="prod-specs" class="text-[13px] font-medium mb-6">24/210g | 7.4oz | UPC 04809015362013</div>
-
-                <p id="prod-desc" class="text-[14px] italic leading-relaxed text-black mb-8">
-                    Bicol's Best Bicol Express Tinapa is a rich and spicy blend of smoked fish cooked in creamy coconut milk with chili, delivering an authentic Bicolano flavor in every bite.
-                </p>
-
-                <div class="absolute bottom-6 right-10">
-                    <a href="#" class="text-[#8A1C14] font-bold underline decoration-2 underline-offset-4 text-lg">Reviews</a>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- Post-Add Action Modal / Toast -->
-    <div id="action-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
-        <div class="bg-white p-8 text-center shadow-2xl max-w-sm mx-4 border-t-8 border-[#8A1C14]">
-            <div class="flex justify-center mb-4">
-                <i data-lucide="check-circle-2" class="w-16 h-16 text-green-600"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-black mb-2">Added to Cart!</h2>
-            <p class="mb-8 font-medium text-gray-600 text-sm">What would you like to do next?</p>
-            
-            <div class="flex flex-col gap-3">
-                <button onclick="window.location.href='checkout.html'" class="w-full bg-[#8A1C14] hover:bg-[#6b150f] text-white px-6 py-3 rounded-full font-bold transition-colors shadow-sm">
-                    Proceed to Checkout
-                </button>
-                <button onclick="window.location.href='shoppingCart.html'" class="w-full bg-white border-2 border-black hover:bg-gray-50 text-black px-6 py-3 rounded-full font-bold transition-colors shadow-sm">
-                    View Shopping Cart
-                </button>
-                <button onclick="document.getElementById('action-modal').classList.add('hidden')" class="text-sm font-bold text-gray-500 hover:underline mt-2">
-                    Continue Shopping
-                </button>
-            </div>
-        </div>
+  <div class="container mt-4">
+    <a href="productCatalogue.html" class="back-link"><i class="ri-arrow-left-line me-1"></i> Back to Catalogue</a>
+    
+    <div id="productContainer" class="product-container row g-4">
+      <!-- Injected via JS -->
     </div>
+  </div>
 
-    <script>
-        lucide.createIcons();
+  <!-- Toast Notification -->
+  <div id="toast" class="toast align-items-center text-bg-success border-0 position-fixed bottom-0 end-0 m-3" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">Added to cart successfully!</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
 
-        // Complete Product Database (combining catalogue data with descriptions & specs)
-        const products = [
-            { id: 1, name: "Bicol's Best Bicol Express Pork – 210g", price: 220, stock: 54320, moq: 50, sku: "BBST-BXPRK-210", specs: "210g | 7.4oz | UPC 0480901536200", desc: "Bicol's Best Bicol Express Pork is a savory and fiery classic made from choice pork cuts simmered slowly in rich coconut milk, fermented shrimp paste, and authentic Bicolano chili peppers.", img: "../images/BE_Pork.png" },
-            { id: 2, name: "Bicol's Best Bicol Express Tinapa – 210g", price: 220, stock: 676767, moq: 50, sku: "BBST-BXTIN-210", specs: "210g | 7.4oz | UPC 04809015362013", desc: "Bicol's Best Bicol Express Tinapa is a rich and spicy blend of smoked fish cooked in creamy coconut milk with chili, delivering an authentic Bicolano flavor in every bite.", img: "../images/BE_Tinapa.png" },
-            { id: 3, name: "Bicol's Best Laing Regular – 226g", price: 168, stock: 120400, moq: 50, sku: "BBST-LNGREG-226", specs: "226g | 8.0oz | UPC 04809015362020", desc: "Bicol's Best Laing Regular features tender dried taro leaves cooked in concentrated coconut milk with fresh spices, bringing a traditional homestyle Bicolano delicacy to your table.", img: "../images/Regular_Laing.png" },
-            { id: 4, name: "Bicol's Best Laing Spicy – 226g", price: 168, stock: 98120, moq: 50, sku: "BBST-LNGSPC-226", specs: "226g | 8.0oz | UPC 04809015362037", desc: "Bicol's Best Laing Spicy blends selected dried taro leaves with rich coconut cream and an extra kick of native chili for spicy food enthusiasts.", img: "../images/Spicy_Laing.png" },
-            { id: 5, name: "Bicol's Best Gulay na Santol Regular – 210g", price: 168, stock: 45000, moq: 50, sku: "BBST-GNSREG-220", specs: "210g | 7.4oz | UPC 04809015362044", desc: "Bicol's Best Gulay na Santol Regular (Sinantolan) combines finely grated santol pulp with thick coconut cream and spices for a perfectly balanced savory dish.", img: "../images/Regular_Santol.png" },
-            { id: 6, name: "Bicol's Best Gulay na Santol Spicy – 210g", price: 168, stock: 32100, moq: 50, sku: "BBST-GNSSPC-220", specs: "210g | 7.4oz | UPC 04809015362051", desc: "Bicol's Best Gulay na Santol Spicy offers a uniquely sour, sweet, savory, and extra fiery profile using shredded santol fruit slow-cooked in coconut milk.", img: "../images/Spicy_Santol.png" },
-            { id: 7, name: "Bicol's Best Bicol Chili Paste – 100g", price: 168, stock: 89000, moq: 50, sku: "BBST-CHLPST-100", specs: "100g | 3.53oz | UPC 04809015362068", desc: "Bicol's Best Bicol Chili Paste is crafted from fresh labuyo peppers and aromatic spices, delivering pure heat and rich flavor to any meal.", img: "../images/Chili_Paste.png" },
-            { id: 8, name: "Bicol's Best Very Special Pinangat Regular – 240g", price: 100, stock: 15400, moq: 50, sku: "BBST-PNGREG-240", specs: "240g | 8.47oz | UPC 04809015362075", desc: "Bicol's Best Very Special Pinangat Regular features carefully layered taro leaves stuffed with seafood and pork, bound with thick coconut milk.", img: "../images/Regular_Pinangat.png" },
-            { id: 9, name: "Bicol's Best Very Special Pinangat Spicy – 240g", price: 100, stock: 12300, moq: 50, sku: "BBST-PNGSPC-240", specs: "240g | 8.47oz | UPC 04809015362082", desc: "Bicol's Best Very Special Pinangat Spicy delivers an authentic Camalig Pinangat experience stuffed with fiery red chilies and rich coconut cream.", img: "../images/Spicy_Pinangat.png" }
-        ];
+  <!-- Bootstrap JS bundle for Toast -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 
-        // Read URL parameter to determine which product was clicked
-        const urlParams = new URLSearchParams(window.location.search);
-        const productId = parseInt(urlParams.get('id')) || 2; // Default to 2 (Tinapa) if no ID is passed
-
-        // Find the selected product from the array
-        let currentProduct = products.find(p => p.id === productId) || products[1];
-
-        // Populate HTML with the correct product details when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('prod-image').src = currentProduct.img;
-            document.getElementById('prod-image').alt = currentProduct.name;
-            document.getElementById('prod-name').innerHTML = currentProduct.name.replace(" – ", " -<br/>");
-            document.getElementById('prod-price').innerText = currentProduct.price.toFixed(2) + " ₱";
-            document.getElementById('prod-stock-info').innerHTML = `${currentProduct.stock} left &nbsp;&nbsp; MOQ for reseller : ${currentProduct.moq}`;
-            document.getElementById('prod-sku').innerText = currentProduct.sku;
-            document.getElementById('prod-specs').innerText = currentProduct.specs;
-            document.getElementById('prod-desc').innerText = currentProduct.desc;
+  <script>
+    // Load Navbar
+    fetch('../navbar.html').then(res => res.text()).then(html => {
+        document.getElementById('navbar-placeholder').innerHTML = html;
+        document.getElementById('navbar-placeholder').querySelectorAll('script').forEach(s => {
+            const newScript = document.createElement('script');
+            if (s.src) newScript.src = s.src; else newScript.textContent = s.textContent;
+            document.body.appendChild(newScript);
         });
+    });
 
-        // Quantity Logic
-        let quantity = 1;
-        const qtyInput = document.getElementById('qtyInput');
+    const products = [
+      { id: 1, name: "Bicol's Best Bicol Express Pork – 210g", brand: "Bicol's Best", price: 220, stock: 54320, sku: "BBST-BXPRK-210", specs: "210g | 7.4oz | UPC 0480901536200", desc: "A savory and fiery classic made from choice pork cuts simmered slowly in rich coconut milk, fermented shrimp paste, and authentic Bicolano chili peppers.", img: "../images/BE_Pork.png" },
+      { id: 2, name: "Bicol's Best Bicol Express Tinapa – 210g", brand: "Bicol's Best", price: 220, stock: 676767, sku: "BBST-BXTIN-210", specs: "210g | 7.4oz | UPC 04809015362013", desc: "A rich and spicy blend of smoked fish cooked in creamy coconut milk with chili.", img: "../images/BE_Tinapa.png" },
+      { id: 3, name: "Bicol's Best Laing Regular – 226g", brand: "Bicol's Best", price: 168, stock: 120400, sku: "BBST-LNGREG-226", specs: "226g | 8.0oz | UPC 04809015362020", desc: "Tender dried taro leaves cooked in concentrated coconut milk with fresh spices.", img: "../images/Regular_Laing.png" },
+      { id: 4, name: "Bicol's Best Laing Spicy – 226g", brand: "Bicol's Best", price: 168, stock: 98120, sku: "BBST-LNGSPC-226", specs: "226g | 8.0oz | UPC 04809015362037", desc: "Selected dried taro leaves with rich coconut cream and an extra kick of native chili.", img: "../images/Spicy_Laing.png" },
+      { id: 5, name: "Bicol's Best Gulay na Santol Regular – 210g", brand: "Bicol's Best", price: 168, stock: 45000, sku: "BBST-GNSREG-220", specs: "210g | 7.4oz | UPC 04809015362044", desc: "Finely grated santol pulp with thick coconut cream and spices for a perfectly balanced savory dish.", img: "../images/Regular_Santol.png" },
+      { id: 6, name: "Bicol's Best Gulay na Santol Spicy – 210g", brand: "Bicol's Best", price: 168, stock: 32100, sku: "BBST-GNSSPC-220", specs: "210g | 7.4oz | UPC 04809015362051", desc: "A uniquely sour, sweet, savory, and extra fiery profile using shredded santol fruit slow-cooked in coconut milk.", img: "../images/Spicy_Santol.png" },
+      { id: 7, name: "Bicol's Best Bicol Chili Paste – 100g", brand: "Bicol's Best", price: 168, stock: 89000, sku: "BBST-CHLPST-100", specs: "100g | 3.53oz | UPC 04809015362068", desc: "Crafted from fresh labuyo peppers and aromatic spices, delivering pure heat and rich flavor.", img: "../images/Chili_Paste.png" },
+      { id: 8, name: "Bicol's Best Very Special Pinangat Regular – 240g", brand: "Bicol's Best", price: 100, stock: 15400, sku: "BBST-PNGREG-240", specs: "240g | 8.47oz | UPC 04809015362075", desc: "Carefully layered taro leaves stuffed with seafood and pork, bound with thick coconut milk.", img: "../images/Regular_Pinangat.png" },
+      { id: 9, name: "Bicol's Best Very Special Pinangat Spicy – 240g", brand: "Bicol's Best", price: 100, stock: 12300, sku: "BBST-PNGSPC-240", specs: "240g | 8.47oz | UPC 04809015362082", desc: "An authentic Camalig Pinangat experience stuffed with fiery red chilies and rich coconut cream.", img: "../images/Spicy_Pinangat.png" }
+    ];
 
-        function updateQty(change) {
-            let newQty = quantity + change;
-            if (newQty >= 1) {
-                quantity = newQty;
-                qtyInput.value = quantity;
-            }
-        }
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = parseInt(urlParams.get('id')) || 2; 
+    let product = products.find(p => p.id === productId) || products[1];
 
-        // Add to Cart Logic
-        function addToCart() {
-            // Fetch existing cart from localStorage or start a new one
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            
-            // Check if item already exists
-            const existingIndex = cart.findIndex(item => item.id === currentProduct.id);
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check Role and Inject Banner if Reseller
+      const currentRole = localStorage.getItem('role') || 'user';
+      if (currentRole === 'reseller') {
+          const banner = document.createElement('div');
+          banner.className = 'bg-warning text-dark text-center py-2 fw-bold shadow-sm mb-3';
+          banner.style.fontSize = '14px';
+          banner.innerHTML = '⚠️ Reseller Mode Active: You must order a minimum of 48 assorted items to checkout.';
+          document.body.insertBefore(banner, document.body.firstChild);
+      }
 
-            if (existingIndex > -1) {
-                // If exists, add to the quantity
-                cart[existingIndex].quantity += quantity;
-            } else {
-                // If new, push the full object formatted exactly how shopping_cart.html expects it
-                cart.push({
-                    id: currentProduct.id,
-                    name: currentProduct.name,
-                    price: currentProduct.price,
-                    img: currentProduct.img,
-                    quantity: quantity
-                });
-            }
+      // Identify Role text for stock
+      let roleText = "";
+      if (currentRole === 'reseller') roleText = ` <span class="text-danger fw-bold">(Reseller MOQ: 48 items)</span>`;
+      else if (currentRole === 'admin') roleText = ` <span class="text-primary fw-bold">(Admin View)</span>`;
 
-            // Save back to localStorage
-            localStorage.setItem('cart', JSON.stringify(cart));
+      const container = document.getElementById('productContainer');
+      container.innerHTML = `
+        <div class="col-md-6 d-flex align-items-center justify-content-center p-4 bg-light rounded-4">
+          <img src="${product.img}" alt="${product.name}" onerror="this.src='../images/logo.png'" class="product-image" style="max-height: 400px; object-fit: contain;">
+        </div>
+        <div class="col-md-6 d-flex flex-column justify-content-center px-lg-5">
+          <div class="product-brand">${product.brand}</div>
+          <h1 class="product-title">${product.name}</h1>
+          
+          <div class="d-flex align-items-center mb-4">
+            <span class="product-price">₱${product.price.toFixed(2)}</span>
+            <span class="ms-3 text-success fw-semibold" id="prod-stock">${product.stock} in stock ${roleText}</span>
+          </div>
 
-            // Show Success Modal that fulfills the PDF requirement (Add to cart OR Proceed to checkout)
-            document.getElementById('action-modal').classList.remove('hidden');
-            document.getElementById('action-modal').classList.add('flex');
-            
-            // Reset quantity display
-            quantity = 1;
-            qtyInput.value = 1;
-        }
-    </script>
+          <div class="mb-2 fw-semibold text-muted">Quantity</div>
+          <div class="d-flex align-items-center gap-4 mb-4">
+            <div class="d-flex align-items-center">
+              <button class="qty-btn" onclick="updateQty(-1)"><i class="ri-subtract-line"></i></button>
+              <input type="number" id="qtyInput" value="1" readonly class="qty-input">
+              <button class="qty-btn" onclick="updateQty(1)"><i class="ri-add-line"></i></button>
+            </div>
+            <button class="btn-add-cart" onclick="addToCart()">Add to Cart</button>
+          </div>
+
+          <div class="sku-block">SKU: ${product.sku}</div>
+          <div class="spec-block">${product.specs}</div>
+
+          <p class="product-description">${product.desc}</p>
+
+          <div class="text-end">
+            <span class="reviews-link">Reviews</span>
+          </div>
+        </div>
+      `;
+    });
+
+    let currentQty = 1;
+
+    function updateQty(change) {
+      currentQty = Math.max(1, currentQty + change);
+      document.getElementById('qtyInput').value = currentQty;
+    }
+
+    function addToCart() {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existingIndex = cart.findIndex(item => item.id === product.id);
+
+      if (existingIndex > -1) {
+        cart[existingIndex].quantity += currentQty;
+      } else {
+        cart.push({
+          id: product.id,
+          brand: product.brand,
+          name: product.name,
+          price: product.price,
+          sku: product.sku,
+          specs: product.specs,
+          img: product.img,
+          quantity: currentQty
+        });
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+      window.dispatchEvent(new Event('cartUpdated'));
+
+      // Show Bootstrap Toast correctly
+      const toastElement = document.getElementById('toast');
+      const toast = new bootstrap.Toast(toastElement);
+      toast.show();
+      
+      // Reset quantity
+      currentQty = 1;
+      document.getElementById('qtyInput').value = 1;
+    }
+  </script>
 </body>
 </html>

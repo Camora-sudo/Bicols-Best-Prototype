@@ -18,7 +18,7 @@
       <div class="col-md-6 col-lg-4">
         <div class="card shadow-lg p-4 rounded" style="backdrop-filter: blur(10px); background: rgba(255,255,255,0.9);">
           <h2 class="text-center mb-4">Login</h2>
-          <form onsubmit="login(event)">
+          <form id="loginForm">
             <!-- Email -->
             <div class="mb-3">
               <label for="email" class="form-label">Email Address</label>
@@ -37,6 +37,17 @@
             <button type="submit" class="btn btn-danger w-100 rounded-pill">Login</button>
           </form>
 
+          <!-- Mock Accounts Cheat Sheet for Demo -->
+          <div class="alert alert-warning mt-4 p-3 rounded" style="font-size: 0.85rem;">
+            <strong>🧪 Mock Accounts for Testing:</strong><br>
+            <ul class="mb-0 mt-1 ps-3">
+              <li><strong>Admin:</strong> <code>admin@bicolsbest.com</code></li>
+              <li><strong>Reseller:</strong> <code>reseller@bicolsbest.com</code></li>
+              <li><strong>User:</strong> <code>user@gmail.com</code> (or any other)</li>
+            </ul>
+            <span class="text-muted mt-2 d-block" style="font-size: 0.75rem;">*Password can be anything for the demo.</span>
+          </div>
+
           <!-- Signup Link -->
           <div class="text-center mt-3">
             <a href="register.html" class="text-decoration-underline text-danger">Don't have an account yet? Sign up here</a>
@@ -45,6 +56,7 @@
       </div>
     </div>
   </div>
+
   <script>
     const passwordField = document.getElementById("password");
     function togglePassword() {
@@ -54,30 +66,33 @@
         passwordField.type = "password";
       }
     }
-  // TEST ONLY simulates a logged-in user; palitan nyo nalang role to user or admin
-  function login(event) {
 
-  event.preventDefault();
+    // ACTUAL LOGIN LOGIC THAT SETS COOKIES
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault(); // Stop the form from refreshing the page!
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+      const email = document.getElementById('email').value.toLowerCase();
+      let role = 'user'; // default
 
-  if (
-    email === "admin@bicolsbest.com" &&
-    password === "Admin123!"
-  ) {
+      // Check the email to assign the mock role
+      if (email.includes('admin')) {
+        role = 'admin';
+      } else if (email.includes('reseller')) {
+        role = 'reseller';
+      }
 
-    document.cookie = "role=admin; path=/; max-age=86400";
+      // SET THE COOKIE!
+      document.cookie = "role=" + role + "; path=/; max-age=86400";
 
-    window.location.href = "../admin/dashboard.html";
+      // Redirect based on the newly set role
+      if (role === 'admin') {
+        window.location.href = '../admin/dashboard.html';
+      } else {
+        window.location.href = '../customer/productCatalogue.html';
+      }
+    });
 
-    return;
-  }
-
-  document.cookie = "role=user; path=/; max-age=86400";
-
-  window.location.href = "productCatalogue.html";
-}
+    // Fetch the external Navbar
     fetch('../navbar.html')
       .then(res => res.text())
       .then(html => {
