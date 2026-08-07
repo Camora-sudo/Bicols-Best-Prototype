@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Profile</title>
-  
+
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Remix Icon -->
@@ -56,6 +56,28 @@
       background-color: #6b1512 !important;
       color: #fff !important;
     }
+
+    button.btn-refund:disabled {
+      background-color: #c8a6a4 !important;
+      color: #fff !important;
+      opacity: 1;
+    }
+
+    .status-cancelled {
+      color: #6b1512;
+      font-weight: bold;
+    }
+
+    .status-processing,
+    .status-pending {
+      color: #a06a00;
+      font-weight: bold;
+    }
+
+    .status-delivered {
+      color: #1e7e34;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -89,24 +111,32 @@
                 </tr>
               </thead>
               <tbody id="purchasesTableBody">
-                <tr>
+                <tr data-order-id="6210" data-display-id="#6210">
+                  <td>#6210</td>
+                  <td>August 8, 2026</td>
+                  <td><span class="status-processing">Processing</span></td>
+                  <td>
+                    <a href="#" class="link-red" data-bs-toggle="modal" data-bs-target="#Order6210">[Details]</a>
+                  </td>
+                </tr>
+                <tr data-order-id="5431" data-display-id="#5431">
                   <td>#5431</td>
                   <td>August 7, 2026</td>
-                  <td>Delivered</td>
+                  <td><span class="status-delivered">Delivered</span></td>
                   <td>
                     <a href="#" class="link-red" data-bs-toggle="modal" data-bs-target="#Order5431">[Details]</a>
                   </td>
                 </tr>
-                <tr>
+                <tr data-order-id="3920" data-display-id="#3920">
                   <td>#3920</td>
                   <td>January 14, 2026</td>
-                  <td>Delivered</td>
+                  <td><span class="status-delivered">Delivered</span></td>
                   <td><a href="#" class="link-red">[Details]</a></td>
                 </tr>
-                <tr>
+                <tr data-order-id="1467" data-display-id="#1467">
                   <td>#1467</td>
                   <td>December 20, 2025</td>
-                  <td>Delivered</td>
+                  <td><span class="status-delivered">Delivered</span></td>
                   <td><a href="#" class="link-red">[Details]</a></td>
                 </tr>
               </tbody>
@@ -115,9 +145,11 @@
         </div>
       </div>
 
-      <!-- Refunds -->
+      <!-- Refunds + Cancel Order -->
       <div class="col-lg-5">
-        <div class="card card-flat">
+
+        <!-- Refunds -->
+        <div class="card card-flat mb-4">
           <div class="card-body">
             <h6 class="fw-bold mb-3">Refunds</h6>
             <table class="table profile-table mb-4">
@@ -134,7 +166,7 @@
                   <td>#9999</td>
                   <td>November 22, 2025</td>
                   <td>#5893</td>
-                  <td><span style="color: #6b1512; font-weight: bold;">Approved</span></td>
+                  <td><span class="status-cancelled">Approved</span></td>
                 </tr>
               </tbody>
             </table>
@@ -146,11 +178,87 @@
             </div>
           </div>
         </div>
+
+        <!-- Cancel Order -->
+        <div class="card card-flat">
+          <div class="card-body">
+            <h6 class="fw-bold mb-3">Cancel Order</h6>
+            <table class="table profile-table mb-4">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Date</th>
+                  <th>Reason</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="cancellationsTableBody">
+                <tr id="noCancellationsRow">
+                  <td colspan="4" class="text-muted text-center">No cancellation requests yet.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="d-grid">
+              <button type="button" class="btn btn-refund" id="openCancelModalBtn" data-bs-toggle="modal" data-bs-target="#cancelOrderModal">
+                Cancel an Order
+              </button>
+            </div>
+            <p class="text-muted mb-0 mt-2" style="font-size: 0.8rem;">
+              Only orders that haven't been picked up by the courier yet (Pending or Processing) can be cancelled.
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 
   <!-- Order Modal (Static Details) -->
+  <div class="modal fade" id="Order6210" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Order #6210</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Date:</strong> August 8, 2026</p>
+          <p><strong>Status:</strong> <span id="order6210Status">Processing</span></p>
+          <p><strong>Delivery:</strong> Lalamove</p>
+          <p><strong>Payment:</strong> Maya</p>
+
+          <p class="mb-1"><strong>Items:</strong></p>
+          <ul class="list-unstyled mb-3">
+            <li class="d-flex justify-content-between">
+              <span>Ceramic Pour-Over Set</span>
+              <span>x1</span>
+            </li>
+            <li class="d-flex justify-content-between">
+              <span>Reusable Coffee Filter</span>
+              <span>x2</span>
+            </li>
+          </ul>
+
+          <hr>
+          <p class="d-flex justify-content-between mb-1">
+            <span>Subtotal</span><span>₱1,990.00</span>
+          </p>
+          <p class="d-flex justify-content-between mb-1">
+            <span>Shipping</span><span>₱180.00</span>
+          </p>
+          <p class="d-flex justify-content-between fw-bold mb-0">
+            <span>Total</span>
+            <span>₱2,170.00</span>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal fade" id="Order5431" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -208,7 +316,7 @@
             <div class="mb-3">
               <label for="refundOrderId" class="form-label">Select Order</label>
               <select class="form-select" id="refundOrderId" required>
-                <option value="" selected disabled>Choose an order...</option>
+                <option value="" selected disabled>Choose an order</option>
                 <option value="5431">#5431 — August 7, 2026</option>
                 <option value="3920">#3920 — January 14, 2026</option>
                 <option value="1467">#1467 — December 20, 2025</option>
@@ -218,7 +326,7 @@
             <div class="mb-3">
               <label for="refundReason" class="form-label">Reason for Refund</label>
               <select class="form-select" id="refundReason" required>
-                <option value="" selected disabled>Select a reason...</option>
+                <option value="" selected disabled>Select a reason</option>
                 <option value="wrong_item">Received wrong item</option>
                 <option value="damaged">Item damaged/spoiled</option>
                 <option value="missing">Missing item(s)</option>
@@ -241,6 +349,50 @@
     </div>
   </div>
 
+  <!-- Cancel Order Modal -->
+  <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Cancel an Order</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="cancelOrderForm">
+            <div class="mb-3">
+              <label for="cancelOrderId" class="form-label">Select Order</label>
+              <select class="form-select" id="cancelOrderId" required>
+                <option value="" selected disabled>Choose an order</option>
+              </select>
+              <div class="form-text" id="cancelOrderHelp">Only orders that are Pending or Processing can be cancelled.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="cancelReason" class="form-label">Reason for Cancellation</label>
+              <select class="form-select" id="cancelReason" required>
+                <option value="" selected disabled>Select a reason</option>
+                <option value="changed_mind">Changed my mind</option>
+                <option value="wrong_item">Ordered the wrong item</option>
+                <option value="found_cheaper">Found it cheaper elsewhere</option>
+                <option value="taking_too_long">Taking too long to ship</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="cancelDetails" class="form-label">Additional Details</label>
+              <textarea class="form-control" id="cancelDetails" rows="3" placeholder="Tell us more (optional)..."></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep Order</button>
+          <button type="button" class="btn btn-refund" id="submitCancelBtn">Confirm Cancellation</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="dynamicModals"></div>
 
   <!-- Refund Toast Notification -->
@@ -255,11 +407,26 @@
     </div>
   </div>
 
+  <!-- Cancel Order Toast Notification -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;">
+    <div id="cancelToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #821b16;">
+      <div class="d-flex">
+        <div class="toast-body">
+          Your order has been cancelled and a refund has been requested.
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
   <!-- JS Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../navbar.js"></script>
 
   <script>
+    // ---- Statuses that still allow a cancellation ----
+    const CANCELLABLE_STATUSES = ['pending', 'processing'];
+
     document.getElementById('submitRefundBtn').addEventListener('click', function () {
       const orderId = document.getElementById('refundOrderId').value;
       const reason = document.getElementById('refundReason').value;
@@ -271,7 +438,7 @@
       }
 
       document.getElementById('refundForm').reset();
-      
+
       const refundModal = bootstrap.Modal.getInstance(document.getElementById('refundModal'));
       if (refundModal) refundModal.hide();
 
@@ -281,24 +448,131 @@
     });
 
     document.addEventListener('DOMContentLoaded', () => {
-    renderCheckedOutOrders();
-});
+      renderCheckedOutOrders();
+      populateCancelOrderDropdown();
+    });
 
-function renderCheckedOutOrders() {
-    const orders = JSON.parse(localStorage.getItem('orders')) || [];
-    if (orders.length === 0) return;
+    // Rebuild the "Select Order" dropdown every time the modal opens, so it
+    // always reflects the current, real-time cancellable status of each order
+    // (an order that ships between page load and now should drop off the list).
+    document.getElementById('cancelOrderModal').addEventListener('show.bs.modal', populateCancelOrderDropdown);
 
-    const tbody = document.getElementById('purchasesTableBody');
-    const modalsContainer = document.getElementById('dynamicModals');
+    function populateCancelOrderDropdown() {
+      const select = document.getElementById('cancelOrderId');
+      const help = document.getElementById('cancelOrderHelp');
+      select.innerHTML = '<option value="" selected disabled>Choose an order</option>';
 
-    orders.forEach(order => {
+      const rows = document.querySelectorAll('#purchasesTableBody tr[data-order-id]');
+      let eligibleCount = 0;
+
+      rows.forEach(row => {
+        const orderId = row.getAttribute('data-order-id');
+        const displayId = row.getAttribute('data-display-id') || orderId;
+        const statusEl = row.querySelector('td:nth-child(3) span');
+        const dateText = row.querySelector('td:nth-child(2)').textContent.trim();
+        const status = statusEl ? statusEl.textContent.trim().toLowerCase() : '';
+
+        if (CANCELLABLE_STATUSES.includes(status)) {
+          const opt = document.createElement('option');
+          opt.value = orderId;
+          opt.textContent = `${displayId} — ${dateText}`;
+          select.appendChild(opt);
+          eligibleCount++;
+        }
+      });
+
+      const submitBtn = document.getElementById('submitCancelBtn');
+      if (eligibleCount === 0) {
+        select.disabled = true;
+        submitBtn.disabled = true;
+        help.textContent = 'You have no orders eligible for cancellation right now.';
+      } else {
+        select.disabled = false;
+        submitBtn.disabled = false;
+        help.textContent = 'Only orders that are Pending or Processing can be cancelled.';
+      }
+    }
+
+    document.getElementById('submitCancelBtn').addEventListener('click', function () {
+      const orderId = document.getElementById('cancelOrderId').value;
+      const reasonSelect = document.getElementById('cancelReason');
+      const reason = reasonSelect.value;
+      const reasonText = reasonSelect.options[reasonSelect.selectedIndex]
+        ? reasonSelect.options[reasonSelect.selectedIndex].text
+        : '';
+
+      if (!orderId || !reason) {
+        alert('Please select an order and a reason before submitting.');
+        return;
+      }
+
+      // Re-check eligibility right before committing the change, in case the
+      // order's status changed while the modal was open (mirrors the
+      // server-side status check described in the security design).
+      const row = document.querySelector(`#purchasesTableBody tr[data-order-id="${orderId}"]`);
+      const statusSpan = row ? row.querySelector('td:nth-child(3) span') : null;
+      const currentStatus = statusSpan ? statusSpan.textContent.trim().toLowerCase() : '';
+      const displayId = row ? (row.getAttribute('data-display-id') || orderId) : orderId;
+
+      if (!row || !CANCELLABLE_STATUSES.includes(currentStatus)) {
+        alert('This order can no longer be cancelled. It may have already shipped.');
+        populateCancelOrderDropdown();
+        return;
+      }
+
+      // Update the order status in "My Purchases"
+      statusSpan.textContent = 'Cancelled';
+      statusSpan.className = 'status-cancelled';
+
+      // If a corresponding details modal has a status field, update it too
+      const orderStatusField = document.getElementById(`order${orderId}Status`);
+      if (orderStatusField) orderStatusField.textContent = 'Cancelled';
+
+      // Add a row to the Cancel Order table
+      const cancelTableBody = document.getElementById('cancellationsTableBody');
+      const noCancellationsRow = document.getElementById('noCancellationsRow');
+      if (noCancellationsRow) noCancellationsRow.remove();
+
+      const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td>${displayId}</td>
+        <td>${today}</td>
+        <td>${reasonText}</td>
+        <td><span class="status-cancelled">Cancelled</span></td>
+      `;
+      cancelTableBody.prepend(newRow);
+
+      // Reset form and close modal
+      document.getElementById('cancelOrderForm').reset();
+      const cancelModal = bootstrap.Modal.getInstance(document.getElementById('cancelOrderModal'));
+      if (cancelModal) cancelModal.hide();
+
+      // Refresh the dropdown so the just-cancelled order disappears from it
+      populateCancelOrderDropdown();
+
+      const toastEl = document.getElementById('cancelToast');
+      const toast = new bootstrap.Toast(toastEl);
+      toast.show();
+    });
+
+    function renderCheckedOutOrders() {
+      const orders = JSON.parse(localStorage.getItem('orders')) || [];
+      if (orders.length === 0) return;
+
+      const tbody = document.getElementById('purchasesTableBody');
+      const modalsContainer = document.getElementById('dynamicModals');
+
+      orders.forEach(order => {
         const modalId = 'modal-' + order.id;
 
         const row = document.createElement('tr');
+        row.setAttribute('data-order-id', order.id);
+        row.setAttribute('data-display-id', order.displayId);
         row.innerHTML = `
             <td>${order.displayId}</td>
             <td>${order.date}</td>
-            <td>${order.status}</td>
+            <td><span class="status-${order.status.toLowerCase()}">${order.status}</span></td>
             <td><a href="#" class="link-red" data-bs-toggle="modal" data-bs-target="#${modalId}">[Details]</a></td>
         `;
         tbody.insertBefore(row, tbody.firstChild);
@@ -320,7 +594,7 @@ function renderCheckedOutOrders() {
                   </div>
                   <div class="modal-body">
                     <p><strong>Date:</strong> ${order.date}</p>
-                    <p><strong>Status:</strong> ${order.status}</p>
+                    <p><strong>Status:</strong> <span id="order${order.id}Status">${order.status}</span></p>
                     <p><strong>Delivery:</strong> ${order.deliveryMode}</p>
                     <p><strong>Payment:</strong> ${order.paymentMode}</p>
                     <p class="mb-1"><strong>Items:</strong></p>
@@ -344,8 +618,11 @@ function renderCheckedOutOrders() {
             </div>
         `;
         modalsContainer.insertAdjacentHTML('beforeend', modalHTML);
-    });
-  }
+      });
+
+      // Dynamically-added orders can change what's cancellable, so refresh the dropdown.
+      populateCancelOrderDropdown();
+    }
   </script>
 </body>
 </html>
