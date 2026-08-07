@@ -283,235 +283,344 @@
   </div>
 
   <script>
-    // Load external navbar HTML
-    fetch('adminnavbar.html')
-      .then(response => response.text())
-      .then(data => {
 
-        document.getElementById('navbar-container').innerHTML = data;
+  // Load external navbar HTML
+  fetch('adminnavbar.html')
+    .then(response => response.text())
+    .then(data => {
 
-        const scripts = document
-          .getElementById('navbar-container')
-          .getElementsByTagName('script');
 
-        for (let i = 0; i < scripts.length; i++) {
-          eval(scripts[i].innerText);
-        }
+      document.getElementById('navbar-container').innerHTML = data;
 
-      })
-      .catch(err => console.error('Error loading navbar:', err));
 
-    // Staff Data
-    const staff = [
-      {
-        id: 1,
-        name: "Marinel LLaguno",
-        department: "Warehouse",
-        role: "Packaging",
-        status: "ACTIVE",
-        img: "../images/pfp.png"
-      },
-      {
-        id: 2,
-        name: "Matthew Lucas",
-        department: "Sales",
-        role: "Manager",
-        status: "ACTIVE",
-        img: "../images/pfp.png"
-      },
-      {
-        id: 3,
-        name: "Angel Go",
-        department: "Warehouse",
-        role: "Packaging",
-        status: "ACTIVE",
-        img: "../images/pfp.png"
-      }
-    ];
+      const scripts = document
+        .getElementById('navbar-container')
+        .getElementsByTagName('script');
 
-    function renderStaff(items) {
 
-      const table =
-        document.getElementById('staffTableBody');
-
-      if (items.length === 0) {
-
-        table.innerHTML = `
-          <tr>
-            <td
-              colspan="6"
-              class="text-center py-5 text-muted">
-
-              No staff found matching your search.
-
-            </td>
-          </tr>
-        `;
-
-        return;
+      for (let i = 0; i < scripts.length; i++) {
+        eval(scripts[i].innerText);
       }
 
-      table.innerHTML = items.map(s => `
 
+    })
+    .catch(err => console.error('Error loading navbar:', err));
+
+
+  // Staff Data
+  const staff = [
+    {
+      id: 1,
+      name: "Marinel LLaguno",
+      department: "Warehouse",
+      role: "Packaging",
+      status: "ACTIVE",
+      img: "../images/pfp.png"
+    },
+    {
+      id: 2,
+      name: "Matthew Lucas",
+      department: "Sales",
+      role: "Manager",
+      status: "ACTIVE",
+      img: "../images/pfp.png"
+    },
+    {
+      id: 3,
+      name: "Angel Go",
+      department: "Warehouse",
+      role: "Packaging",
+      status: "ACTIVE",
+      img: "../images/pfp.png"
+    }
+  ];
+
+
+  function renderStaff(items) {
+
+
+    const table =
+      document.getElementById('staffTableBody');
+
+
+    if (items.length === 0) {
+
+
+      table.innerHTML = `
         <tr>
+          <td
+            colspan="6"
+            class="text-center py-5 text-muted">
 
-          <td>
 
-            <img
-              src="${s.img}"
-              alt="${s.name}"
-              class="profile-image">
+            No staff found matching your search.
 
-          </td>
-
-          <td>
-            ${s.name}
-          </td>
-
-          <td>
-            ${s.department}
-          </td>
-
-          <td>
-            ${s.role}
-          </td>
-
-          <td class="active-status">
-            ${s.status}
-          </td>
-
-          <td>
-
-            <button
-              class="admin-btn"
-              onclick="editStaff(${s.id})">
-              EDIT
-            </button>
 
           </td>
-
         </tr>
+      `;
 
-      `).join('');
+
+      return;
     }
 
-    function handleSearch() {
 
-      const searchTerm =
-        document.getElementById('searchInput').value.toLowerCase();
+    table.innerHTML = items.map(s => `
 
-      const filtered = staff.filter(s =>
-        s.name.toLowerCase().includes(searchTerm) ||
-        s.department.toLowerCase().includes(searchTerm) ||
-        s.role.toLowerCase().includes(searchTerm)
-      );
 
-      renderStaff(filtered);
+      <tr>
+
+
+        <td>
+
+
+          <img
+            src="${s.img}"
+            alt="${s.name}"
+            class="profile-image">
+
+
+        </td>
+
+
+        <td>
+          ${s.name}
+        </td>
+
+
+        <td>
+          ${s.department}
+        </td>
+
+
+        <td>
+          ${s.role}
+        </td>
+
+
+        <td class="active-status">
+          ${s.status}
+        </td>
+
+
+        <td>
+
+
+          <button
+            class="admin-btn"
+            onclick="editStaff(${s.id})">
+            EDIT
+          </button>
+
+
+          <button
+            class="admin-btn"
+            onclick="deleteStaff(${s.id})">
+            DELETE
+          </button>
+
+
+        </td>
+
+
+      </tr>
+
+
+    `).join('');
+  }
+
+
+  function handleSearch() {
+
+
+    const searchTerm =
+      document.getElementById('searchInput').value.toLowerCase();
+
+
+    const filtered = staff.filter(s =>
+      s.name.toLowerCase().includes(searchTerm) ||
+      s.department.toLowerCase().includes(searchTerm) ||
+      s.role.toLowerCase().includes(searchTerm)
+    );
+
+
+    renderStaff(filtered);
+  }
+
+
+  function openAddStaff() {
+
+
+    document.getElementById('staffModalTitle').innerText =
+      'CREATE NEW USER';
+
+
+    document.getElementById('staffId').value = '';
+    document.getElementById('staffName').value = '';
+    document.getElementById('staffDepartment').value = 'Warehouse';
+    document.getElementById('staffRole').value = '';
+    document.getElementById('staffStatus').value = 'ACTIVE';
+
+
+  }
+
+
+  function editStaff(id) {
+
+
+    const person =
+      staff.find(s => s.id === id);
+
+
+    if (!person) return;
+
+
+    document.getElementById('staffModalTitle').innerText =
+      'EDIT STAFF';
+
+
+    document.getElementById('staffId').value =
+      person.id;
+
+
+    document.getElementById('staffName').value =
+      person.name;
+
+
+    document.getElementById('staffDepartment').value =
+      person.department;
+
+
+    document.getElementById('staffRole').value =
+      person.role;
+
+
+    document.getElementById('staffStatus').value =
+      person.status;
+
+
+    bootstrap.Modal.getOrCreateInstance(
+      document.getElementById('staffModal')
+    ).show();
+
+
+  }
+
+
+  function deleteStaff(id) {
+
+
+    const person =
+      staff.find(s => s.id === id);
+
+
+    if (!person) return;
+
+
+    const confirmed =
+      confirm(`Are you sure you want to delete ${person.name}?`);
+
+
+    if (!confirmed) return;
+
+
+    const staffIndex =
+      staff.findIndex(s => s.id === id);
+
+
+    if (staffIndex > -1) {
+
+      staff.splice(staffIndex, 1);
+
     }
 
-    function openAddStaff() {
 
-      document.getElementById('staffModalTitle').innerText =
-        'CREATE NEW USER';
+    renderStaff(staff);
 
-      document.getElementById('staffId').value = '';
-      document.getElementById('staffName').value = '';
-      document.getElementById('staffDepartment').value = 'Warehouse';
-      document.getElementById('staffRole').value = '';
-      document.getElementById('staffStatus').value = 'ACTIVE';
 
+    alert('Staff deleted successfully.');
+
+  }
+
+
+  function saveStaff() {
+
+
+    const id =
+      parseInt(document.getElementById('staffId').value);
+
+
+    const name =
+      document.getElementById('staffName').value.trim();
+
+
+    const department =
+      document.getElementById('staffDepartment').value;
+
+
+    const role =
+      document.getElementById('staffRole').value.trim();
+
+
+    const status =
+      document.getElementById('staffStatus').value;
+
+
+    if (!name || !role) {
+
+
+      alert('Please complete all staff information.');
+
+
+      return;
     }
 
-    function editStaff(id) {
+
+    if (id) {
+
 
       const person =
         staff.find(s => s.id === id);
 
-      if (!person) return;
 
-      document.getElementById('staffModalTitle').innerText =
-        'EDIT STAFF';
+      person.name = name;
+      person.department = department;
+      person.role = role;
+      person.status = status;
 
-      document.getElementById('staffId').value =
-        person.id;
 
-      document.getElementById('staffName').value =
-        person.name;
+    } else {
 
-      document.getElementById('staffDepartment').value =
-        person.department;
 
-      document.getElementById('staffRole').value =
-        person.role;
+      staff.push({
+        id: staff.length + 1,
+        name: name,
+        department: department,
+        role: role,
+        status: status,
+        img: "../images/pfp.png"
+      });
 
-      document.getElementById('staffStatus').value =
-        person.status;
-
-      bootstrap.Modal.getOrCreateInstance(
-        document.getElementById('staffModal')
-      ).show();
 
     }
 
-    function saveStaff() {
 
-      const id =
-        parseInt(document.getElementById('staffId').value);
-
-      const name =
-        document.getElementById('staffName').value.trim();
-
-      const department =
-        document.getElementById('staffDepartment').value;
-
-      const role =
-        document.getElementById('staffRole').value.trim();
-
-      const status =
-        document.getElementById('staffStatus').value;
-
-      if (!name || !role) {
-
-        alert('Please complete all staff information.');
-
-        return;
-      }
-
-      if (id) {
-
-        const person =
-          staff.find(s => s.id === id);
-
-        person.name = name;
-        person.department = department;
-        person.role = role;
-        person.status = status;
-
-      } else {
-
-        staff.push({
-          id: staff.length + 1,
-          name: name,
-          department: department,
-          role: role,
-          status: status,
-          img: "../images/pfp.png"
-        });
-
-      }
-
-      renderStaff(staff);
-
-      bootstrap.Modal.getOrCreateInstance(
-        document.getElementById('staffModal')
-      ).hide();
-
-      alert('Staff updated successfully.');
-    }
-
-    // Render Initial Staff
     renderStaff(staff);
-  </script>
+
+
+    bootstrap.Modal.getOrCreateInstance(
+      document.getElementById('staffModal')
+    ).hide();
+
+
+    alert('Staff updated successfully.');
+  }
+
+
+  // Render Initial Staff
+  renderStaff(staff);
+
+</script>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>

@@ -250,202 +250,304 @@
   </div>
 
   <script>
-    // Load external navbar HTML
-    fetch('adminnavbar.html')
-      .then(response => response.text())
-      .then(data => {
 
-        document.getElementById('navbar-container').innerHTML = data;
+  // Load external navbar HTML
+  fetch('adminnavbar.html')
+    .then(response => response.text())
+    .then(data => {
 
-        const scripts = document
-          .getElementById('navbar-container')
-          .getElementsByTagName('script');
 
-        for (let i = 0; i < scripts.length; i++) {
-          eval(scripts[i].innerText);
-        }
+      document.getElementById('navbar-container').innerHTML = data;
 
-      })
-      .catch(err => console.error('Error loading navbar:', err));
 
-    // Users Data
-    const users = [
-      {
-        id: 1,
-        name: "Clar Nazario",
-        status: "ACTIVE",
-        img: "../images/pfp.png"
-      },
-      {
-        id: 2,
-        name: "Miguel Monterola",
-        status: "ACTIVE",
-        img: "../images/pfp.png"
-      },
-      {
-        id: 3,
-        name: "Angel DIego",
-        status: "ACTIVE",
-        img: "../images/pfp.png"
-      }
-    ];
+      const scripts = document
+        .getElementById('navbar-container')
+        .getElementsByTagName('script');
 
-    function renderUsers(items) {
 
-      const table =
-        document.getElementById('userTableBody');
-
-      if (items.length === 0) {
-
-        table.innerHTML = `
-          <tr>
-            <td
-              colspan="4"
-              class="text-center py-5 text-muted">
-
-              No users found matching your search.
-
-            </td>
-          </tr>
-        `;
-
-        return;
+      for (let i = 0; i < scripts.length; i++) {
+        eval(scripts[i].innerText);
       }
 
-      table.innerHTML = items.map(u => `
 
+    })
+    .catch(err => console.error('Error loading navbar:', err));
+
+
+  // Users Data
+  const users = [
+    {
+      id: 1,
+      name: "Clar Nazario",
+      status: "ACTIVE",
+      img: "../images/pfp.png"
+    },
+    {
+      id: 2,
+      name: "Miguel Monterola",
+      status: "ACTIVE",
+      img: "../images/pfp.png"
+    },
+    {
+      id: 3,
+      name: "Angel DIego",
+      status: "ACTIVE",
+      img: "../images/pfp.png"
+    }
+  ];
+
+
+  function renderUsers(items) {
+
+
+    const table =
+      document.getElementById('userTableBody');
+
+
+    if (items.length === 0) {
+
+
+      table.innerHTML = `
         <tr>
+          <td
+            colspan="4"
+            class="text-center py-5 text-muted">
 
-          <td>
 
-            <img
-              src="${u.img}"
-              alt="${u.name}"
-              class="profile-image">
+            No users found matching your search.
 
-          </td>
-
-          <td>
-            ${u.name}
-          </td>
-
-          <td class="active-status">
-            ${u.status}
-          </td>
-
-          <td>
-
-            <button
-              class="admin-btn"
-              onclick="editUser(${u.id})">
-              EDIT
-            </button>
 
           </td>
-
         </tr>
+      `;
 
-      `).join('');
+
+      return;
     }
 
-    function handleSearch() {
 
-      const searchTerm =
-        document.getElementById('searchInput').value.toLowerCase();
+    table.innerHTML = items.map(u => `
 
-      const filtered = users.filter(u =>
-        u.name.toLowerCase().includes(searchTerm)
-      );
 
-      renderUsers(filtered);
+      <tr>
+
+
+        <td>
+
+
+          <img
+            src="${u.img}"
+            alt="${u.name}"
+            class="profile-image">
+
+
+        </td>
+
+
+        <td>
+          ${u.name}
+        </td>
+
+
+        <td class="active-status">
+          ${u.status}
+        </td>
+
+
+        <td>
+
+
+          <button
+            class="admin-btn"
+            onclick="editUser(${u.id})">
+            EDIT
+          </button>
+
+
+          <button
+            class="admin-btn"
+            onclick="deleteUser(${u.id})">
+            DELETE
+          </button>
+
+
+        </td>
+
+
+      </tr>
+
+
+    `).join('');
+  }
+
+
+  function handleSearch() {
+
+
+    const searchTerm =
+      document.getElementById('searchInput').value.toLowerCase();
+
+
+    const filtered = users.filter(u =>
+      u.name.toLowerCase().includes(searchTerm)
+    );
+
+
+    renderUsers(filtered);
+  }
+
+
+  function openAddUser() {
+
+
+    document.getElementById('userModalTitle').innerText =
+      'CREATE NEW USER';
+
+
+    document.getElementById('userId').value = '';
+    document.getElementById('userName').value = '';
+    document.getElementById('userStatus').value = 'ACTIVE';
+
+
+  }
+
+
+  function editUser(id) {
+
+
+    const user =
+      users.find(u => u.id === id);
+
+
+    if (!user) return;
+
+
+    document.getElementById('userModalTitle').innerText =
+      'EDIT USER';
+
+
+    document.getElementById('userId').value =
+      user.id;
+
+
+    document.getElementById('userName').value =
+      user.name;
+
+
+    document.getElementById('userStatus').value =
+      user.status;
+
+
+    bootstrap.Modal.getOrCreateInstance(
+      document.getElementById('userModal')
+    ).show();
+
+
+  }
+
+
+  function deleteUser(id) {
+
+
+    const user =
+      users.find(u => u.id === id);
+
+
+    if (!user) return;
+
+
+    const confirmed =
+      confirm(`Are you sure you want to delete ${user.name}?`);
+
+
+    if (!confirmed) return;
+
+
+    const userIndex =
+      users.findIndex(u => u.id === id);
+
+
+    if (userIndex > -1) {
+
+      users.splice(userIndex, 1);
+
     }
 
-    function openAddUser() {
 
-      document.getElementById('userModalTitle').innerText =
-        'CREATE NEW USER';
+    renderUsers(users);
 
-      document.getElementById('userId').value = '';
-      document.getElementById('userName').value = '';
-      document.getElementById('userStatus').value = 'ACTIVE';
 
+    alert('User deleted successfully.');
+
+  }
+
+
+  function saveUser() {
+
+
+    const id =
+      parseInt(document.getElementById('userId').value);
+
+
+    const name =
+      document.getElementById('userName').value.trim();
+
+
+    const status =
+      document.getElementById('userStatus').value;
+
+
+    if (!name) {
+
+
+      alert('Please enter a user name.');
+
+
+      return;
     }
 
-    function editUser(id) {
+
+    if (id) {
+
 
       const user =
         users.find(u => u.id === id);
 
-      if (!user) return;
 
-      document.getElementById('userModalTitle').innerText =
-        'EDIT USER';
+      user.name = name;
+      user.status = status;
 
-      document.getElementById('userId').value =
-        user.id;
 
-      document.getElementById('userName').value =
-        user.name;
+    } else {
 
-      document.getElementById('userStatus').value =
-        user.status;
 
-      bootstrap.Modal.getOrCreateInstance(
-        document.getElementById('userModal')
-      ).show();
+      users.push({
+        id: users.length + 1,
+        name: name,
+        status: status,
+        img: "../images/pfp.png"
+      });
+
 
     }
 
-    function saveUser() {
 
-      const id =
-        parseInt(document.getElementById('userId').value);
-
-      const name =
-        document.getElementById('userName').value.trim();
-
-      const status =
-        document.getElementById('userStatus').value;
-
-      if (!name) {
-
-        alert('Please enter a user name.');
-
-        return;
-      }
-
-      if (id) {
-
-        const user =
-          users.find(u => u.id === id);
-
-        user.name = name;
-        user.status = status;
-
-      } else {
-
-        users.push({
-          id: users.length + 1,
-          name: name,
-          status: status,
-          img: "../images/pfp.png"
-        });
-
-      }
-
-      renderUsers(users);
-
-      bootstrap.Modal.getOrCreateInstance(
-        document.getElementById('userModal')
-      ).hide();
-
-      alert('User updated successfully.');
-    }
-
-    // Render Initial Users
     renderUsers(users);
-  </script>
 
+
+    bootstrap.Modal.getOrCreateInstance(
+      document.getElementById('userModal')
+    ).hide();
+
+
+    alert('User updated successfully.');
+  }
+
+
+  // Render Initial Users
+  renderUsers(users);
+
+</script>
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 

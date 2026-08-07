@@ -285,267 +285,341 @@
   </div>
 
   <script>
-    // Load external navbar HTML
-    fetch('adminnavbar.html')
-      .then(response => response.text())
-      .then(data => {
 
-        document.getElementById('navbar-container').innerHTML = data;
+  // Load external navbar HTML
+  fetch('adminnavbar.html')
+    .then(response => response.text())
+    .then(data => {
 
-        const scripts = document
-          .getElementById('navbar-container')
-          .getElementsByTagName('script');
+      document.getElementById('navbar-container').innerHTML = data;
 
-        for (let i = 0; i < scripts.length; i++) {
-          eval(scripts[i].innerText);
-        }
+      const scripts = document
+        .getElementById('navbar-container')
+        .getElementsByTagName('script');
 
-      })
-      .catch(err => console.error('Error loading navbar:', err));
-
-    // Products Data
-    const products = [
-      {
-        id: 1,
-        name: "Bicol's Best Bicol Express Pork – 210g",
-        sku: "BBST-BXPRK-210",
-        price: 220,
-        stock: 54320,
-        img: "../images/BE_Pork.png"
-      },
-      {
-        id: 2,
-        name: "Bicol's Best Bicol Express Tinapa – 210g",
-        sku: "BBST-BXTIN-210",
-        price: 220,
-        stock: 676767,
-        img: "../images/BE_Tinapa.png"
-      },
-      {
-        id: 3,
-        name: "Bicol's Best Laing Regular – 226g",
-        sku: "BBST-LNGREG-226",
-        price: 168,
-        stock: 120400,
-        img: "../images/Regular_Laing.png"
-      },
-      {
-        id: 4,
-        name: "Bicol's Best Laing Spicy – 226g",
-        sku: "BBST-LNGSPC-226",
-        price: 168,
-        stock: 120300,
-        img: "../images/Spicy_Laing.png"
-      },
-      {
-        id: 5,
-        name: "Bicol's Best Gulay na Santol Regular – 210g",
-        sku: "BBST-SNTREG-210",
-        price: 168,
-        stock: 227206,
-        img: "../images/Regular_Santol.png"
-      },
-      {
-        id: 6,
-        name: "Bicol's Best Gulay na Santol Spicy – 210g",
-        sku: "BBST-SNTSPC-210",
-        price: 168,
-        stock: 227206,
-        img: "../images/Spicy_Santol.png"
-      },
-      {
-        id: 7,
-        name: "Bicol's Best Bicol Chili Paste – 100g",
-        sku: "BBST-CHILI-100",
-        price: 168,
-        stock: 227206,
-        img: "../images/Chili_Paste.png"
-      }
-    ];
-
-    function renderProducts(items) {
-
-      const table =
-        document.getElementById('productTableBody');
-
-      if (items.length === 0) {
-
-        table.innerHTML = `
-          <tr>
-            <td
-              colspan="6"
-              class="text-center py-5 text-muted">
-
-              No products found matching your search.
-
-            </td>
-          </tr>
-        `;
-
-        return;
+      for (let i = 0; i < scripts.length; i++) {
+        eval(scripts[i].innerText);
       }
 
-      table.innerHTML = items.map(p => `
+    })
+    .catch(err => console.error('Error loading navbar:', err));
 
+
+  // Products Data
+  const products = [
+    {
+      id: 1,
+      name: "Bicol's Best Bicol Express Pork – 210g",
+      sku: "BBST-BXPRK-210",
+      price: 220,
+      stock: 54320,
+      img: "../images/BE_Pork.png"
+    },
+    {
+      id: 2,
+      name: "Bicol's Best Bicol Express Tinapa – 210g",
+      sku: "BBST-BXTIN-210",
+      price: 220,
+      stock: 676767,
+      img: "../images/BE_Tinapa.png"
+    },
+    {
+      id: 3,
+      name: "Bicol's Best Laing Regular – 226g",
+      sku: "BBST-LNGREG-226",
+      price: 168,
+      stock: 120400,
+      img: "../images/Regular_Laing.png"
+    },
+    {
+      id: 4,
+      name: "Bicol's Best Laing Spicy – 226g",
+      sku: "BBST-LNGSPC-226",
+      price: 168,
+      stock: 120300,
+      img: "../images/Spicy_Laing.png"
+    },
+    {
+      id: 5,
+      name: "Bicol's Best Gulay na Santol Regular – 210g",
+      sku: "BBST-SNTREG-210",
+      price: 168,
+      stock: 227206,
+      img: "../images/Regular_Santol.png"
+    },
+    {
+      id: 6,
+      name: "Bicol's Best Gulay na Santol Spicy – 210g",
+      sku: "BBST-SNTSPC-210",
+      price: 168,
+      stock: 227206,
+      img: "../images/Spicy_Santol.png"
+    },
+    {
+      id: 7,
+      name: "Bicol's Best Bicol Chili Paste – 100g",
+      sku: "BBST-CHILI-100",
+      price: 168,
+      stock: 227206,
+      img: "../images/Chili_Paste.png"
+    }
+  ];
+
+
+  function renderProducts(items) {
+
+    const table =
+      document.getElementById('productTableBody');
+
+
+    if (items.length === 0) {
+
+      table.innerHTML = `
         <tr>
+          <td
+            colspan="6"
+            class="text-center py-5 text-muted">
 
-          <td>
-
-            <img
-              src="${p.img}"
-              alt="${p.name}"
-              class="product-image"
-              onerror="this.src='https://via.placeholder.com/100x120?text=Product'">
+            No products found matching your search.
 
           </td>
-
-          <td class="product-name">
-            ${p.name}
-          </td>
-
-          <td>
-            ${p.sku}
-          </td>
-
-          <td class="product-price">
-            ₱${p.price}
-          </td>
-
-          <td class="stock-number">
-            ${p.stock}
-          </td>
-
-          <td>
-
-            <button
-              class="admin-btn"
-              onclick="editProduct(${p.id})">
-              EDIT
-            </button>
-
-          </td>
-
         </tr>
+      `;
 
-      `).join('');
+      return;
     }
 
-    function handleSearch() {
 
-      const searchTerm =
-        document.getElementById('searchInput').value.toLowerCase();
+    table.innerHTML = items.map(p => `
 
-      const filtered = products.filter(p =>
-        p.name.toLowerCase().includes(searchTerm) ||
-        p.sku.toLowerCase().includes(searchTerm)
-      );
+      <tr>
 
-      renderProducts(filtered);
+        <td>
+
+          <img
+            src="${p.img}"
+            alt="${p.name}"
+            class="product-image"
+            onerror="this.src='https://via.placeholder.com/100x120?text=Product'">
+
+        </td>
+
+        <td class="product-name">
+          ${p.name}
+        </td>
+
+        <td>
+          ${p.sku}
+        </td>
+
+        <td class="product-price">
+          ₱${p.price}
+        </td>
+
+        <td class="stock-number">
+          ${p.stock}
+        </td>
+
+        <td>
+
+          <button
+            class="admin-btn"
+            onclick="editProduct(${p.id})">
+            EDIT
+          </button>
+
+          <button
+            class="admin-btn"
+            onclick="deleteProduct(${p.id})">
+            DELETE
+          </button>
+
+        </td>
+
+      </tr>
+
+    `).join('');
+  }
+
+
+  function handleSearch() {
+
+    const searchTerm =
+      document.getElementById('searchInput').value.toLowerCase();
+
+
+    const filtered = products.filter(p =>
+      p.name.toLowerCase().includes(searchTerm) ||
+      p.sku.toLowerCase().includes(searchTerm)
+    );
+
+
+    renderProducts(filtered);
+  }
+
+
+  function openAddProduct() {
+
+    document.getElementById('productModalTitle').innerText =
+      'ADD NEW PRODUCT';
+
+
+    document.getElementById('productId').value = '';
+    document.getElementById('productName').value = '';
+    document.getElementById('productSku').value = '';
+    document.getElementById('productPrice').value = '';
+    document.getElementById('productStock').value = '';
+
+  }
+
+
+  function editProduct(id) {
+
+    const product =
+      products.find(p => p.id === id);
+
+
+    if (!product) return;
+
+
+    document.getElementById('productModalTitle').innerText =
+      'EDIT PRODUCT';
+
+
+    document.getElementById('productId').value =
+      product.id;
+
+
+    document.getElementById('productName').value =
+      product.name;
+
+
+    document.getElementById('productSku').value =
+      product.sku;
+
+
+    document.getElementById('productPrice').value =
+      product.price;
+
+
+    document.getElementById('productStock').value =
+      product.stock;
+
+
+    bootstrap.Modal.getOrCreateInstance(
+      document.getElementById('productModal')
+    ).show();
+
+  }
+
+
+  function deleteProduct(id) {
+
+    const product =
+      products.find(p => p.id === id);
+
+
+    if (!product) return;
+
+
+    const confirmed =
+      confirm(`Are you sure you want to delete ${product.name}?`);
+
+
+    if (!confirmed) return;
+
+
+    const productIndex =
+      products.findIndex(p => p.id === id);
+
+
+    if (productIndex > -1) {
+
+      products.splice(productIndex, 1);
+
     }
 
-    function openAddProduct() {
 
-      document.getElementById('productModalTitle').innerText =
-        'ADD NEW PRODUCT';
+    renderProducts(products);
 
-      document.getElementById('productId').value = '';
-      document.getElementById('productName').value = '';
-      document.getElementById('productSku').value = '';
-      document.getElementById('productPrice').value = '';
-      document.getElementById('productStock').value = '';
 
+    alert('Product deleted successfully.');
+
+  }
+
+
+  function saveProduct() {
+
+    const id =
+      parseInt(document.getElementById('productId').value);
+
+
+    const name =
+      document.getElementById('productName').value.trim();
+
+
+    const sku =
+      document.getElementById('productSku').value.trim();
+
+
+    const price =
+      parseFloat(document.getElementById('productPrice').value);
+
+
+    const stock =
+      parseInt(document.getElementById('productStock').value);
+
+
+    if (!name || !sku || isNaN(price) || isNaN(stock)) {
+
+      alert('Please complete all product information.');
+
+      return;
     }
 
-    function editProduct(id) {
+
+    if (id) {
 
       const product =
         products.find(p => p.id === id);
 
-      if (!product) return;
 
-      document.getElementById('productModalTitle').innerText =
-        'EDIT PRODUCT';
+      product.name = name;
+      product.sku = sku;
+      product.price = price;
+      product.stock = stock;
 
-      document.getElementById('productId').value =
-        product.id;
 
-      document.getElementById('productName').value =
-        product.name;
+    } else {
 
-      document.getElementById('productSku').value =
-        product.sku;
-
-      document.getElementById('productPrice').value =
-        product.price;
-
-      document.getElementById('productStock').value =
-        product.stock;
-
-      bootstrap.Modal.getOrCreateInstance(
-        document.getElementById('productModal')
-      ).show();
+      products.push({
+        id: products.length + 1,
+        name: name,
+        sku: sku,
+        price: price,
+        stock: stock,
+        img: "../images/BE_Pork.png"
+      });
 
     }
 
-    function saveProduct() {
 
-      const id =
-        parseInt(document.getElementById('productId').value);
-
-      const name =
-        document.getElementById('productName').value.trim();
-
-      const sku =
-        document.getElementById('productSku').value.trim();
-
-      const price =
-        parseFloat(document.getElementById('productPrice').value);
-
-      const stock =
-        parseInt(document.getElementById('productStock').value);
-
-      if (!name || !sku || isNaN(price) || isNaN(stock)) {
-
-        alert('Please complete all product information.');
-
-        return;
-      }
-
-      if (id) {
-
-        const product =
-          products.find(p => p.id === id);
-
-        product.name = name;
-        product.sku = sku;
-        product.price = price;
-        product.stock = stock;
-
-      } else {
-
-        products.push({
-          id: products.length + 1,
-          name: name,
-          sku: sku,
-          price: price,
-          stock: stock,
-          img: "../images/BE_Pork.png"
-        });
-
-      }
-
-      renderProducts(products);
-
-      bootstrap.Modal.getOrCreateInstance(
-        document.getElementById('productModal')
-      ).hide();
-
-      alert('Product updated successfully.');
-    }
-
-    // Render Initial Products
     renderProducts(products);
-  </script>
+
+
+    bootstrap.Modal.getOrCreateInstance(
+      document.getElementById('productModal')
+    ).hide();
+
+
+    alert('Product updated successfully.');
+  }
+
+
+  // Render Initial Products
+  renderProducts(products);
+
+</script>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
