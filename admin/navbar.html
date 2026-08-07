@@ -19,102 +19,113 @@
     :root {
       --brand-red: #821b16;
       --brand-red-hover: #661410;
-      --navbar-bg: #f8f8f8;
-      --text: #1c1917;
-      --border: #e7e5e4;
+      --navbar-bg: #821b16;
+      --text: #ffffff;
+      --border: #821b16;
     }
+
 
     /* Admin Navbar */
+
     .admin-navbar {
-      background-color: #f8f8f8;
-      border-bottom: 1px solid var(--border);
+      background-color: #821b16;
+      border-bottom: 1px solid #821b16;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      min-height: 85px;
     }
+
 
     /* Brand */
+
     .admin-navbar .navbar-brand {
-      color: var(--brand-red);
-      font-weight: 800;
-      font-size: 1.3rem;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 1.5rem;
       line-height: 1.1;
+
+      display: flex;
+      align-items: center;
+      gap: 22px;
     }
+
 
     .admin-navbar .navbar-brand:hover {
-      color: var(--brand-red-hover);
+      color: #ffffff;
     }
 
-    /* Admin Label */
-    .admin-label {
-      color: var(--brand-red);
-      font-size: 0.75rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-top: 4px;
+
+    /* Brand Logo */
+
+    .admin-navbar .navbar-brand img {
+      width: 155px;
+      height: auto;
+      object-fit: contain;
     }
+
 
     /* Navigation Links */
+
     .admin-navbar .nav-link {
-      color: var(--text);
-      font-weight: 600;
+      color: #ffffff;
+      font-weight: 500;
+      font-size: 1.1rem;
+
       padding: 10px 14px;
       border-radius: 10px;
+
       transition: 0.2s ease;
     }
 
+
     .admin-navbar .nav-link:hover {
-      color: var(--brand-red);
-      background-color: #f5eaea;
+      color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.10);
     }
+
 
     .admin-navbar .nav-link.active {
-      color: var(--brand-red);
-      background-color: #f5eaea;
+      color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.10);
     }
 
+
     /* Navigation Icons */
+
     .admin-navbar .nav-link i {
       margin-right: 6px;
       font-size: 1.1rem;
       vertical-align: middle;
     }
 
-    /* Admin Profile */
-    .admin-profile {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text);
-      font-weight: 600;
-      padding: 10px 14px;
-    }
-
-    .admin-profile i {
-      color: var(--brand-red);
-      font-size: 1.4rem;
-    }
 
     /* Mobile Menu Button */
+
     .admin-navbar .navbar-toggler {
       border: none;
-      color: var(--brand-red);
+      color: #ffffff;
       font-size: 1.5rem;
     }
+
 
     .admin-navbar .navbar-toggler:focus {
       box-shadow: none;
     }
 
+
     /* Mobile */
+
     @media (max-width: 991px) {
 
       .admin-navbar .nav-link {
         margin-top: 4px;
       }
 
-      .admin-profile {
-        margin-top: 10px;
-        padding-left: 14px;
+      .admin-navbar .navbar-brand {
+        font-size: 1.2rem;
+      }
+
+      .admin-navbar .navbar-brand img {
+        width: 120px;
       }
 
     }
@@ -125,24 +136,30 @@
 <body>
 
   <!-- Admin Navbar -->
+
   <nav class="navbar navbar-expand-lg admin-navbar">
 
     <div class="container">
 
       <!-- Brand -->
+
       <a
         class="navbar-brand"
         href="dashboard.html">
 
-        Bicol's Best
+        <img
+          src="../images/logo.png"
+          alt="Bicol's Best Logo">
 
-        <span class="admin-label d-block">
-          ADMIN
+        <span>
+          Bicol's Best Served Online
         </span>
 
       </a>
 
+
       <!-- Mobile Toggle -->
+
       <button
         class="navbar-toggler"
         type="button"
@@ -156,28 +173,18 @@
 
       </button>
 
+
       <!-- Navigation -->
+
       <div
         class="collapse navbar-collapse"
         id="adminNavbar">
 
         <ul class="navbar-nav ms-auto align-items-lg-center">
 
-          <!-- Dashboard -->
-          <li class="nav-item">
-
-            <a
-              class="nav-link"
-              href="dashboard.html">
-
-              <i class="ri-dashboard-line"></i>
-              Dashboard
-
-            </a>
-
-          </li>
 
           <!-- Orders -->
+
           <li class="nav-item">
 
             <a
@@ -191,7 +198,9 @@
 
           </li>
 
+
           <!-- Products -->
+
           <li class="nav-item">
 
             <a
@@ -205,7 +214,9 @@
 
           </li>
 
+
           <!-- Staff -->
+
           <li class="nav-item">
 
             <a
@@ -219,7 +230,9 @@
 
           </li>
 
+
           <!-- Users -->
+
           <li class="nav-item">
 
             <a
@@ -233,20 +246,22 @@
 
           </li>
 
-          <!-- Admin Profile -->
-          <li class="nav-item ms-lg-2">
 
-            <div class="admin-profile">
+          <!-- Logout -->
 
-              <i class="ri-admin-line"></i>
+          <li class="nav-item">
 
-              <span>
-                Admin
-              </span>
+            <a
+              class="nav-link"
+              href="../public/login.html">
 
-            </div>
+              <i class="ri-logout-box-r-line"></i>
+              Logout
+
+            </a>
 
           </li>
+
 
         </ul>
 
@@ -256,10 +271,13 @@
 
   </nav>
 
+
   <!-- Bootstrap JS -->
+
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js">
   </script>
+
 
   <script>
 
@@ -270,12 +288,14 @@
         .split('/')
         .pop();
 
+
     document
       .querySelectorAll('.admin-navbar .nav-link')
       .forEach(link => {
 
         const linkPage =
           link.getAttribute('href');
+
 
         if (linkPage === currentPage) {
 
