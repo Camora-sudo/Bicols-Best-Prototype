@@ -18,7 +18,7 @@
       <div class="col-md-6 col-lg-4">
         <div class="card shadow-lg p-4 rounded" style="backdrop-filter: blur(10px); background: rgba(255,255,255,0.9);">
           <h2 class="text-center mb-4">Login</h2>
-          <form>
+          <form onsubmit="login(event)">
             <!-- Email -->
             <div class="mb-3">
               <label for="email" class="form-label">Email Address</label>
@@ -55,7 +55,29 @@
       }
     }
   // TEST ONLY simulates a logged-in user; palitan nyo nalang role to user or admin
-  document.cookie = "role=; path=/; max-age=86400";
+  function login(event) {
+
+  event.preventDefault();
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  if (
+    email === "admin@bicolsbest.com" &&
+    password === "Admin123!"
+  ) {
+
+    document.cookie = "role=admin; path=/; max-age=86400";
+
+    window.location.href = "../Admin/dashboard.html";
+
+    return;
+  }
+
+  document.cookie = "role=user; path=/; max-age=86400";
+
+  window.location.href = "productCatalogue.html";
+}
     fetch('../navbar.html')
       .then(res => res.text())
       .then(html => {
