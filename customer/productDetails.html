@@ -163,17 +163,8 @@
 
   <!-- Bootstrap JS bundle for Toast -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
-
+  <script src="../navbar.js"></script>
   <script>
-    // Load Navbar
-    fetch('../navbar.html').then(res => res.text()).then(html => {
-        document.getElementById('navbar-placeholder').innerHTML = html;
-        document.getElementById('navbar-placeholder').querySelectorAll('script').forEach(s => {
-            const newScript = document.createElement('script');
-            if (s.src) newScript.src = s.src; else newScript.textContent = s.textContent;
-            document.body.appendChild(newScript);
-        });
-    });
 
     const products = [
       { id: 1, name: "Bicol's Best Bicol Express Pork – 210g", brand: "Bicol's Best", price: 220, stock: 54320, sku: "BBST-BXPRK-210", specs: "210g | 7.4oz | UPC 0480901536200", desc: "A savory and fiery classic made from choice pork cuts simmered slowly in rich coconut milk, fermented shrimp paste, and authentic Bicolano chili peppers.", img: "../images/BE_Pork.png" },
@@ -223,12 +214,14 @@
 
           <div class="mb-2 fw-semibold text-muted">Quantity</div>
           <div class="d-flex align-items-center gap-4 mb-4">
-            <div class="d-flex align-items-center">
-              <button class="qty-btn" onclick="updateQty(-1)"><i class="ri-subtract-line"></i></button>
-              <input type="number" id="qtyInput" value="1" readonly class="qty-input">
-              <button class="qty-btn" onclick="updateQty(1)"><i class="ri-add-line"></i></button>
-            </div>
-            <button class="btn-add-cart" onclick="addToCart()">Add to Cart</button>
+              <div class="d-flex align-items-center">
+                <button class="qty-btn" onclick="updateQty(-1)"><i class="ri-subtract-line"></i></button>
+                
+                <input type="number" id="qtyInput" value="1" class="qty-input mx-2" onchange="manualUpdateQty(this.value)">
+                
+                <button class="qty-btn" onclick="updateQty(1)"><i class="ri-add-line"></i></button>
+              </div>
+              <button class="btn-add-cart" onclick="addToCart()">Add to Cart</button>
           </div>
 
           <div class="sku-block">SKU: ${product.sku}</div>
@@ -245,8 +238,19 @@
 
     let currentQty = 1;
 
+    // Function for the + and - buttons
     function updateQty(change) {
       currentQty = Math.max(1, currentQty + change);
+      document.getElementById('qtyInput').value = currentQty;
+    }
+
+    // Function for typing the number manually
+    function manualUpdateQty(newValue) {
+      let val = parseInt(newValue);
+      if (isNaN(val) || val < 1) {
+        val = 1;
+      }
+      currentQty = val;
       document.getElementById('qtyInput').value = currentQty;
     }
 

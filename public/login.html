@@ -57,7 +57,7 @@
     </div>
   </div>
 
-  <script>
+<script>
     const passwordField = document.getElementById("password");
     function togglePassword() {
       if (passwordField.type === "password") {
@@ -67,7 +67,10 @@
       }
     }
 
-    // ACTUAL LOGIN LOGIC THAT SETS COOKIES
+    // WIPE OLD DATA WHEN VISITING LOGIN PAGE
+    localStorage.removeItem('role');
+    document.cookie = "role=; path=/; max-age=86400";
+
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault(); // Stop the form from refreshing the page!
 
@@ -81,7 +84,10 @@
         role = 'reseller';
       }
 
-      // SET THE COOKIE!
+      // THE CRITICAL FIX: Save the role to localStorage so navbar.js can actually read it!
+      localStorage.setItem('role', role);
+      
+      // Also set the cookie as a backup
       document.cookie = "role=" + role + "; path=/; max-age=86400";
 
       // Redirect based on the newly set role
@@ -92,24 +98,10 @@
       }
     });
 
-    // Fetch the external Navbar
-    fetch('../navbar.html')
-      .then(res => res.text())
-      .then(html => {
-        const placeholder = document.getElementById('navbar-placeholder');
-        placeholder.innerHTML = html;
- 
-        const oldScripts = placeholder.querySelectorAll('script');
-        oldScripts.forEach(oldScript => {
-          const newScript = document.createElement('script');
-          if (oldScript.src) {
-            newScript.src = oldScript.src;
-          } else {
-            newScript.textContent = oldScript.textContent;
-          }
-          document.body.appendChild(newScript);
-        });
-      });
+    // Load Navbar via navbar.js
+    const script = document.createElement('script');
+    script.src = '../navbar.js';
+    document.body.appendChild(script);
   </script>
 </body>
 </html>

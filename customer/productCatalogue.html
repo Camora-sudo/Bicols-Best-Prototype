@@ -91,16 +91,8 @@
     <div id="productGrid" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4"></div>
   </div>
 
+  <script src="../navbar.js"></script>
   <script>
-    // Load Navbar
-    fetch('../navbar.html').then(res => res.text()).then(html => {
-        document.getElementById('navbar-placeholder').innerHTML = html;
-        document.getElementById('navbar-placeholder').querySelectorAll('script').forEach(s => {
-            const newScript = document.createElement('script');
-            if (s.src) newScript.src = s.src; else newScript.textContent = s.textContent;
-            document.body.appendChild(newScript);
-        });
-    });
 
     const products = [
       { id: 1, name: "Bicol's Best Bicol Express Pork – 210g", price: 220, category: 'All', img: "../images/BE_Pork.png" },
