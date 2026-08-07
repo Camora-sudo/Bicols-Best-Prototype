@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <a href="${URL}/customer/shoppingCart.html" class="text-white fs-3"><i class="ri-shopping-cart-2-line"></i></a>
         `;
     } else {
-        // Guest (Not logged in)
+
         navLinks = `
             <a href="${URL}/customer/productCatalogue.html" class="nav-link text-white mx-3">Products</a>
             <a href="${URL}/public/login.html" class="text-white fs-3"><i class="ri-login-box-line"></i></a>
