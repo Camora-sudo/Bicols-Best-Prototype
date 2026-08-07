@@ -113,9 +113,8 @@
   </style>
 </head>
 <body>
-
-  <!-- Navbar -->
-  <div id="navbar-container"></div>
+  <!-- Navbar Placeholder -->
+  <div id="navbar-placeholder"></div>
 
   <!-- Main Content -->
   <main class="container">
@@ -139,17 +138,15 @@
   </main>
 
   <script>
-    // Load external navbar HTML
-    fetch('navbar.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('navbar-container').innerHTML = data;
-        const scripts = document.getElementById('navbar-container').getElementsByTagName('script');
-        for (let i = 0; i < scripts.length; i++) {
-          eval(scripts[i].innerText);
-        }
-      })
-      .catch(err => console.error('Error loading navbar:', err));
+    // Load Navbar
+    fetch('../navbar.html').then(res => res.text()).then(html => {
+        document.getElementById('navbar-placeholder').innerHTML = html;
+        document.getElementById('navbar-placeholder').querySelectorAll('script').forEach(s => {
+            const newScript = document.createElement('script');
+            if (s.src) newScript.src = s.src; else newScript.textContent = s.textContent;
+            document.body.appendChild(newScript);
+        });
+    });
 
     // Products Data
     const products = [
