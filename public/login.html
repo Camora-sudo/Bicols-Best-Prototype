@@ -41,9 +41,9 @@
           <div class="alert alert-warning mt-4 p-3 rounded" style="font-size: 0.85rem;">
             <strong>🧪 Mock Accounts for Testing:</strong><br>
             <ul class="mb-0 mt-1 ps-3">
-              <li><strong>Admin:</strong> <code>admin@bicolsbest.com</code></li>
-              <li><strong>Reseller:</strong> <code>reseller@bicolsbest.com</code></li>
-              <li><strong>User:</strong> <code>user@gmail.com</code> (or any other)</li>
+              <li><strong>Admin:</strong> <code>admin@bicolsbest.com / bic0lsb3st@dm!n</code></li>
+              <li><strong>Reseller:</strong> <code>reseller@bicolsbest.com / bic0lsb3stres311eR</code></li>
+              <li><strong>User:</strong> <code>user@gmail.com / bic0lsb3stU$er</code></li>
             </ul>
             <span class="text-muted mt-2 d-block" style="font-size: 0.75rem;">*Password can be anything for the demo.</span>
           </div>
@@ -74,8 +74,19 @@
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault(); // Stop the form from refreshing the page!
 
+      const passwordField = document.getElementById("password");
       const email = document.getElementById('email').value.toLowerCase();
       let role = 'user'; // default
+
+
+      // Check password
+      if((passwordField != "bic0lsb3st@dm!n" && email != "admin@bicolsbest.com")
+          || (passwordField != "bic0lsb3stres311eR" && email != "reseller@bicolsbest.com")
+          || (passwordField != "bic0lsb3stU$er" && email != "user@gmail.com")
+      ){
+        alert("Email and/or password is not correct.");
+        return;
+      }
 
       // Check the email to assign the mock role
       if (email.includes('admin')) {
