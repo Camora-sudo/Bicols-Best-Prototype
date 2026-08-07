@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<header class="py-3" style="background-color:#821b16;">
+<header class="py-3 sticky-top" style="background-color:#821b16;">
   <div class="container-fluid px-4">
     <div class="d-flex justify-content-between align-items-center" id="navbar-content">
       <!-- filled in by JS -->
@@ -73,6 +73,27 @@
             <a href="${URL}/admin/staffManagement.html" class="nav-link text-white mx-3">Staff</a>
             <a href="${URL}/admin/userManagement.html" class="nav-link text-white mx-3">Users</a>
             <a href="#" id="logout-link" class="nav-link text-white mx-3">Logout</a>
+          </nav>
+        </div>
+      `;
+
+      document.getElementById('logout-link').addEventListener('click', function(e) {
+        e.preventDefault();
+        logout();
+      });
+    }
+    else {
+      container.innerHTML = `
+        <div class="d-flex align-items-center">
+          <a href="${URL}/admin/dashboard.html" class="d-flex align-items-center text-white text-decoration-none">
+            <img src="${URL}/images/logo.png" width="130" class="d-inline-block align-text-top" alt="Bicol's Best">
+            <span class="fw-bold fs-5 d-none d-md-inline mx-3">Bicol's Best Served Online</span>
+          </a>
+        </div>
+        <div class="d-flex align-items-center">
+          <nav class="d-none d-md-flex align-items-center me-4">
+            <a href="${URL}/customer/productCatalogue.html" class="nav-link text-white mx-3">Products</a>
+            <a href="${URL}/public/login.html" class="text-white fs-3"></a>
           </nav>
         </div>
       `;
