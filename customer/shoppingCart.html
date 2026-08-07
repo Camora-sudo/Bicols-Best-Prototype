@@ -13,24 +13,8 @@
 </head>
 <body class="text-black min-h-screen relative pb-20">
 
-    <!-- Navigation Bar -->
-    <header class="bg-[#8A1C14] text-white px-8 py-3 flex justify-between items-center sticky top-0 z-50 shadow-md">
-        <div class="flex flex-col items-center">
-            <div class="border-[1.5px] border-white rounded-[2rem] px-5 py-1 bg-[#E21818] shadow-sm">
-                <h1 class="brand-text text-2xl font-bold italic tracking-wider">Bicol's Best<sup class="text-xs">&reg;</sup></h1>
-            </div>
-            <p class="text-[10px] mt-1 italic tracking-wide">Traditionally made... Authentic!</p>
-        </div>
-        
-        <nav class="flex items-center gap-8 text-sm font-medium">
-            <a href="productDetails.html" class="hover:underline underline-offset-4 decoration-2">Products</a>
-            <a href="#" class="hover:underline underline-offset-4">Profile</a>
-            <a href="#" class="hover:underline underline-offset-4">Contact Us</a>
-            <a href="shoppingCart.html" class="relative hover:scale-105 transition-transform">
-                <i data-lucide="shopping-cart" class="w-7 h-7"></i>
-            </a>
-        </nav>
-    </header>
+    <!-- Navbar Placeholder -->
+    <div id="navbar-placeholder"></div>
 
     <!-- Main Content -->
     <main class="max-w-5xl mx-auto py-10 px-4">
@@ -45,18 +29,21 @@
                 <div class="col-span-2 text-center">Subtotal</div>
             </div>
 
-            <!-- Cart Items Container (Dynamically Populated) -->
+            <!-- Cart Items Container -->
             <div id="cart-items" class="px-8 min-h-[150px]">
-                <!-- Items will be injected here via JavaScript -->
+                <!-- Items injected here via JS -->
             </div>
 
             <!-- Total & Checkout Box -->
-            <div class="absolute -bottom-4 -right-4 bg-white shadow-md border border-gray-200 p-6 flex flex-col gap-4 w-[320px]">
-                <div class="flex justify-between items-center font-bold text-[15px]">
+            <div class="absolute -bottom-4 -right-4 bg-white shadow-md border border-gray-200 p-6 flex flex-col gap-3 w-[320px]">
+                <div class="flex justify-between items-center font-bold text-[15px] mb-2">
                     <span>Total :</span>
                     <span id="cart-total">0.00 ₱</span>
                 </div>
-                <!-- Link to Checkout Page -->
+                
+                <!-- Warning Text Placeholder -->
+                <div id="moq-warning-container"></div>
+
                 <button onclick="window.location.href='checkout.html'" id="checkout-btn" class="w-full bg-[#751A1A] hover:bg-[#5a1414] text-white font-medium py-3 rounded-full transition-colors shadow-sm">
                     Proceed to Checkout
                 </button>
@@ -65,30 +52,38 @@
     </main>
 
     <script>
-        // Fetch cart data from localStorage that was saved by productDetails.html
+        // Load Navbar
+        fetch('../navbar.html').then(res => res.text()).then(html => {
+            document.getElementById('navbar-placeholder').innerHTML = html;
+            document.getElementById('navbar-placeholder').querySelectorAll('script').forEach(s => {
+                const newScript = document.createElement('script');
+                if (s.src) newScript.src = s.src; else newScript.textContent = s.textContent;
+                document.body.appendChild(newScript);
+            });
+        });
+
+        // Cart Logic
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const currentRole = localStorage.getItem('role') || 'user';
 
         function renderCart() {
             const cartContainer = document.getElementById('cart-items');
             cartContainer.innerHTML = '';
-            let total = 0;
+            let totalPrice = 0;
+            let totalQty = 0; // The crucial tracking variable for the 48 item rule!
 
             if (cart.length === 0) {
-                cartContainer.innerHTML = '<div class="py-12 text-center text-gray-500 font-medium text-lg italic">Your cart is empty. <br><a href="productDetails.html" class="text-[#8A1C14] hover:underline mt-2 inline-block not-italic">Browse Products</a></div>';
+                cartContainer.innerHTML = '<div class="py-12 text-center text-gray-500 font-medium text-lg italic">Your cart is empty. <br><a href="productCatalogue.html" class="text-[#8A1C14] hover:underline mt-2 inline-block not-italic">Browse Products</a></div>';
                 document.getElementById('cart-total').innerText = '0.00 ₱';
-                
-                const checkoutBtn = document.getElementById('checkout-btn');
-                checkoutBtn.disabled = true;
-                checkoutBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-                checkoutBtn.classList.remove('bg-[#751A1A]', 'hover:bg-[#5a1414]');
+                updateCheckoutButton(0);
                 return;
             }
 
             cart.forEach((item, index) => {
                 const subtotal = item.price * item.quantity;
-                total += subtotal;
+                totalPrice += subtotal;
+                totalQty += item.quantity; 
                 
-                // Don't add bottom border to the last item
                 const borderClass = index !== cart.length - 1 ? 'border-b border-gray-400' : '';
 
                 const itemHTML = `
@@ -116,15 +111,37 @@
                 cartContainer.insertAdjacentHTML('beforeend', itemHTML);
             });
 
-            // Update Total and enable checkout
-            document.getElementById('cart-total').innerText = total.toFixed(2) + ' ₱';
-            const checkoutBtn = document.getElementById('checkout-btn');
-            checkoutBtn.disabled = false;
-            checkoutBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-            checkoutBtn.classList.add('bg-[#751A1A]', 'hover:bg-[#5a1414]');
-            
-            // Re-initialize icons for newly injected HTML
+            document.getElementById('cart-total').innerText = totalPrice.toFixed(2) + ' ₱';
+            updateCheckoutButton(totalQty);
             lucide.createIcons();
+        }
+
+        // --- STRICT CHECKOUT ENFORCEMENT ---
+        function updateCheckoutButton(totalQty) {
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const warningContainer = document.getElementById('moq-warning-container');
+            
+            warningContainer.innerHTML = ''; // Clear existing warnings
+
+            if (totalQty === 0) {
+                // Rule 1: Nobody can check out with 0 items
+                checkoutBtn.disabled = true;
+                checkoutBtn.className = 'w-full bg-gray-400 text-gray-200 font-medium py-3 rounded-full cursor-not-allowed shadow-sm';
+            } else if (currentRole === 'reseller' && totalQty < 48) {
+                // Rule 2: Resellers MUST have >= 48 items
+                checkoutBtn.disabled = true;
+                checkoutBtn.className = 'w-full bg-gray-400 text-gray-200 font-medium py-3 rounded-full cursor-not-allowed shadow-sm';
+                
+                warningContainer.innerHTML = `
+                    <div class="text-red-600 text-[12px] font-bold text-center leading-tight mb-2">
+                        Reseller MOQ not met!<br/>You need ${48 - totalQty} more items.
+                    </div>
+                `;
+            } else {
+                // Allowed to checkout
+                checkoutBtn.disabled = false;
+                checkoutBtn.className = 'w-full bg-[#751A1A] hover:bg-[#5a1414] text-white font-medium py-3 rounded-full transition-colors shadow-sm';
+            }
         }
 
         function updateQuantity(id, change) {
@@ -145,10 +162,8 @@
             renderCart();
         }
 
-        // Render cart on page load
         document.addEventListener('DOMContentLoaded', () => {
             renderCart();
-            lucide.createIcons();
         });
     </script>
 </body>
