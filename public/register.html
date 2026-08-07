@@ -102,7 +102,7 @@
         <input type="password" id="confirm-password" required>
         <button type="button" onclick="togglePassword('confirm-password')">👁</button>
       </div>
-      <button type="submit" class="submit-btn">Sign Up</button>
+      <button type="submit" class="submit-btn" onclick="register()">Sign Up</button>
     </form>
     <a href="login.html" class="login-link">Already have an account? Login</a>
   </div>
@@ -111,6 +111,23 @@
     function togglePassword(fieldId) {
       const field = document.getElementById(fieldId);
       field.type = field.type === "password" ? "text" : "password";
+    }
+
+    //TODO: Add function that checks if password and confirm password matches.
+    function register(){
+        const emailField = document.getElementById('email').value;
+        const passwordField = document.getElementById('reg-password').value;
+        const confimrPasswordField = document.getElementById('confirm-password').value;
+
+        if(emailField === "" || passwordField === "" || confimrPasswordField === ""){
+            alert('Please make sure all fields are filled out.');
+        }
+        else if(passwordField === confimrPasswordField){
+            alert('You have successfully registered!');
+        }
+        else{
+            alert('Password and confirm password do not match.');
+        }
     }
   </script>
 </body>
