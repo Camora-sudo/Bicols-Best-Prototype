@@ -211,7 +211,6 @@
   document.addEventListener('DOMContentLoaded', () => {
     const guest = !isLoggedIn();
 
-    // Check Role and Inject Banner if Reseller
     const currentRole = localStorage.getItem('role') || 'user';
     if (currentRole === 'reseller') {
         const banner = document.createElement('div');
@@ -221,7 +220,6 @@
         document.body.insertBefore(banner, document.body.firstChild);
     }
 
-    // Identify Role text for stock
     let roleText = "";
     if (currentRole === 'reseller') roleText = ` <span class="text-danger fw-bold">(Reseller MOQ: 48 items)</span>`;
     else if (currentRole === 'admin') roleText = ` <span class="text-primary fw-bold">(Admin View)</span>`;
