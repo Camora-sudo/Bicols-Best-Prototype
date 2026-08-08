@@ -174,7 +174,7 @@
                   <th>Status</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="refundsTableBody">
                 <tr>
                   <td>#9999</td>
                   <td>November 22, 2025</td>
@@ -244,11 +244,11 @@
           <p class="mb-1"><strong>Items:</strong></p>
           <ul class="list-unstyled mb-3">
             <li class="d-flex justify-content-between">
-              <span>Ceramic Pour-Over Set</span>
+              <span>Bicol Chili Paste</span>
               <span>x1</span>
             </li>
             <li class="d-flex justify-content-between">
-              <span>Reusable Coffee Filter</span>
+              <span>Laing Spicy</span>
               <span>x2</span>
             </li>
           </ul>
@@ -438,27 +438,43 @@
 
   <script>
     // ---- Statuses that still allow a cancellation ----
-    const CANCELLABLE_STATUSES = ['pending', 'processing'];
+    const CANCELLABLE_STATUSES = ['pending'];
 
     document.getElementById('submitRefundBtn').addEventListener('click', function () {
-      const orderId = document.getElementById('refundOrderId').value;
-      const reason = document.getElementById('refundReason').value;
-      const details = document.getElementById('refundDetails').value;
+    const orderSelect = document.getElementById('refundOrderId');
+    const orderId = orderSelect.value;
+    const reason = document.getElementById('refundReason').value;
+    const details = document.getElementById('refundDetails').value;
 
-      if (!orderId || !reason) {
-        alert('Please select an order and a reason before submitting.');
-        return;
-      }
+    if (!orderId || !reason) {
+      alert('Please select an order and a reason before submitting.');
+      return;
+    }
 
-      document.getElementById('refundForm').reset();
+    // Build a new refund request row
+    const requestId = '#' + Math.floor(1000 + Math.random() * 9000);
+    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const orderDisplayId = orderSelect.options[orderSelect.selectedIndex].text.split(' — ')[0];
 
-      const refundModal = bootstrap.Modal.getInstance(document.getElementById('refundModal'));
-      if (refundModal) refundModal.hide();
+    const refundTableBody = document.getElementById('refundsTableBody');
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+      <td>${requestId}</td>
+      <td>${today}</td>
+      <td>${orderDisplayId}</td>
+      <td><span class="status-processing">Pending</span></td>
+    `;
+    refundTableBody.prepend(newRow);
 
-      const toastEl = document.getElementById('refundToast');
-      const toast = new bootstrap.Toast(toastEl);
-      toast.show();
-    });
+    document.getElementById('refundForm').reset();
+
+    const refundModal = bootstrap.Modal.getInstance(document.getElementById('refundModal'));
+    if (refundModal) refundModal.hide();
+
+    const toastEl = document.getElementById('refundToast');
+    const toast = new bootstrap.Toast(toastEl);
+    toast.show();
+  });
 
     document.addEventListener('DOMContentLoaded', () => {
       renderCheckedOutOrders();
@@ -502,7 +518,7 @@
       } else {
         select.disabled = false;
         submitBtn.disabled = false;
-        help.textContent = 'Only orders that are Pending or Processing can be cancelled.';
+        help.textContent = 'Only orders that are still Pending can be cancelled.';
       }
     }
 

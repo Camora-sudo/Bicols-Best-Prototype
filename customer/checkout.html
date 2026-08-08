@@ -120,18 +120,18 @@
                 <div class="flex flex-col gap-3 font-bold text-[15px] mb-8 text-black">
                     <div class="flex justify-between">
                         <span>Subtotal :</span>
-                        <span id="summary-subtotal">0.00 ₱</span>
+                        <span id="summary-subtotal">₱ 0.00 </span>
                     </div>
                     <div class="flex justify-between">
                         <span>Shipping :</span>
-                        <span id="shipping-fee">50.00 ₱</span>
+                        <span id="shipping-fee">₱ 50.00 </span>
                     </div>
                     
                     <div class="border-t-[3px] border-gray-400 my-4"></div>
                     
                     <div class="flex justify-between text-lg">
                         <span>Total :</span>
-                        <span id="total-price">0.00 ₱</span>
+                        <span id="total-price">₱ 0.00 </span>
                     </div>
                 </div>
 
@@ -183,14 +183,14 @@
             // ------------------------------------
 
             cartSubtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            document.getElementById('summary-subtotal').innerText = cartSubtotal.toFixed(2) + ' ₱';
+            document.getElementById('summary-subtotal').innerText = ' ₱' + cartSubtotal.toFixed(2);
             updateTotals();
         });
 
         function updateTotals() {
             const totalPrice = cartSubtotal + deliveryFee;
-            document.getElementById('shipping-fee').innerText = deliveryFee.toFixed(2) + ' ₱';
-            document.getElementById('total-price').innerText = totalPrice.toFixed(2) + ' ₱';
+            document.getElementById('shipping-fee').innerText = ' ₱' + deliveryFee.toFixed(2) ;
+            document.getElementById('total-price').innerText = ' ₱' + totalPrice.toFixed(2);
         }
 
         function toggleDelivery() {
@@ -264,7 +264,7 @@
                 id: 'order_' + Date.now(),
                 displayId: '#' + Math.floor(1000 + Math.random() * 9000),
                 date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
-                status: 'Processing',
+                status: 'Pending',   // was 'Processing'
                 deliveryMode: isDelivery ? 'Delivery' : 'Store Pickup',
                 paymentMode: paymentMode === 'cod' ? 'Cash on Delivery' : 'E-Wallet/Card',
                 customer: {
@@ -289,18 +289,10 @@
             orders.unshift(order); // newest first
             localStorage.setItem('orders', JSON.stringify(orders));
         }
-        
         function clearCartAndReturn() {
             localStorage.removeItem('cart');
             window.location.href = 'productCatalogue.html';
         }
-
-        document.querySelectorAll('input[type="text"], input[type="email"]').forEach(input => {
-            input.addEventListener('input', function() {
-                this.style.borderColor = 'black';
-                this.style.backgroundColor = 'white';
-            });
-        });
     </script>
 </body>
 </html>
