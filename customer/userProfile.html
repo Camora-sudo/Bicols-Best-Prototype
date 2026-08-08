@@ -327,14 +327,12 @@
         <div class="modal-body">
           <form id="refundForm">
             <div class="mb-3">
-              <label for="refundOrderId" class="form-label">Select Order</label>
-              <select class="form-select" id="refundOrderId" required>
-                <option value="" selected disabled>Choose an order</option>
-                <option value="5431">#5431 — August 7, 2026</option>
-                <option value="3920">#3920 — January 14, 2026</option>
-                <option value="1467">#1467 — December 20, 2025</option>
-              </select>
-            </div>
+            <label for="refundOrderId" class="form-label">Select Order</label>
+            <select class="form-select" id="refundOrderId" required>
+              <option value="" selected disabled>Choose an order</option>
+            </select>
+            <div class="form-text" id="refundOrderHelp">Only orders placed within the last 2 days are eligible for a refund request.</div>
+          </div>
 
             <div class="mb-3">
               <label for="refundReason" class="form-label">Reason for Refund</label>
@@ -479,6 +477,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       renderCheckedOutOrders();
       populateCancelOrderDropdown();
+      populateRefundOrderDropdown(); 
     });
 
     // Rebuild the "Select Order" dropdown every time the modal opens, so it
@@ -651,6 +650,52 @@
 
       // Dynamically-added orders can change what's cancellable, so refresh the dropdown.
       populateCancelOrderDropdown();
+    }
+    
+    const REFUND_WINDOW_DAYS = 2;
+
+    function populateRefundOrderDropdown() {
+      const select = document.getElementById('refundOrderId');
+      const help = document.getElementById('refundOrderHelp');
+      select.innerHTML = '<option value="" selected disabled>Choose an order</option>';
+
+      const rows = document.querySelectorAll('#purchasesTableBody tr[data-order-id]');
+      const now = new Date();
+      let eligibleCount = 0;
+
+      rows.forEach(row => {
+        const orderId = row.getAttribute('data-order-id');
+        const displayId = row.getAttribute('data-display-id') || orderId;
+        const dateText = row.querySelector('td:nth-child(2)').textContent.trim();
+        const statusEl = row.querySelector('td:nth-child(3) span');
+        const status = statusEl ? statusEl.textContent.trim().toLowerCase() : '';
+
+        const orderDate = new Date(dateText);
+        const daysSinceOrder = (now - orderDate) / (1000 * 60 * 60 * 24);
+
+        // Must be Delivered AND within the refund window
+        const isDelivered = status === 'delivered';
+        const withinWindow = daysSinceOrder >= 0 && daysSinceOrder <= REFUND_WINDOW_DAYS;
+
+        if (isDelivered && withinWindow) {
+          const opt = document.createElement('option');
+          opt.value = orderId;
+          opt.textContent = `${displayId} — ${dateText}`;
+          select.appendChild(opt);
+          eligibleCount++;
+        }
+      });
+
+      const submitBtn = document.getElementById('submitRefundBtn');
+      if (eligibleCount === 0) {
+        select.disabled = true;
+        submitBtn.disabled = true;
+        help.textContent = 'You have no orders eligible for a refund right now. Only Delivered orders, within 2 days of purchase, are eligible.';
+      } else {
+        select.disabled = false;
+        submitBtn.disabled = false;
+        help.textContent = 'Only Delivered orders, within 2 days of purchase, are eligible for a refund request.';
+      }
     }
   </script>
 </body>
