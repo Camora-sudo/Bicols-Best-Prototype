@@ -148,6 +148,7 @@
           <tr>
             <th>Staff</th>
             <th>Name</th>
+            <th>Email</th>
             <th>Department</th>
             <th>Role</th>
             <th>Status</th>
@@ -204,6 +205,32 @@
             <input
               type="text"
               id="staffName"
+              class="form-control">
+
+          </div>
+
+          <div class="mb-3">
+
+            <label class="form-label">
+              Email address
+            </label>
+
+            <input
+              type="email"
+              id="staffEmail"
+              class="form-control">
+
+          </div>
+
+          <div class="mb-3">
+
+            <label class="form-label">
+              Password
+            </label>
+
+            <input
+              type="password"
+              id="staffPassword"
               class="form-control">
 
           </div>
@@ -312,6 +339,7 @@
     {
       id: 1,
       name: "Marinel LLaguno",
+      email: "marinel@bicolsbest.com",
       department: "Warehouse",
       role: "Packaging",
       status: "ACTIVE",
@@ -320,6 +348,7 @@
     {
       id: 2,
       name: "Matthew Lucas",
+      email: "matthew@bicolsbest.com",
       department: "Sales",
       role: "Manager",
       status: "ACTIVE",
@@ -328,6 +357,7 @@
     {
       id: 3,
       name: "Angel Go",
+      email: "angelgo@bicolsbest.com",
       department: "Warehouse",
       role: "Packaging",
       status: "ACTIVE",
@@ -349,7 +379,7 @@
       table.innerHTML = `
         <tr>
           <td
-            colspan="6"
+            colspan="7"
             class="text-center py-5 text-muted">
 
 
@@ -385,6 +415,11 @@
 
         <td>
           ${s.name}
+        </td>
+
+
+        <td>
+          ${s.email}
         </td>
 
 
@@ -457,6 +492,7 @@
 
     document.getElementById('staffId').value = '';
     document.getElementById('staffName').value = '';
+    document.getElementById('staffEmail').value = '';
     document.getElementById('staffDepartment').value = 'Warehouse';
     document.getElementById('staffRole').value = '';
     document.getElementById('staffStatus').value = 'ACTIVE';
@@ -485,6 +521,10 @@
 
     document.getElementById('staffName').value =
       person.name;
+
+
+    document.getElementById('staffEmail').value =
+      person.email;
 
 
     document.getElementById('staffDepartment').value =
@@ -554,6 +594,10 @@
       document.getElementById('staffName').value.trim();
 
 
+    const email =
+      document.getElementById('staffEmail').value.trim();
+
+
     const department =
       document.getElementById('staffDepartment').value;
 
@@ -584,6 +628,7 @@
 
 
       person.name = name;
+      person.email= email;
       person.department = department;
       person.role = role;
       person.status = status;
@@ -595,6 +640,7 @@
       staff.push({
         id: staff.length + 1,
         name: name,
+        email: email,
         department: department,
         role: role,
         status: status,
