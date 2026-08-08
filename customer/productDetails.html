@@ -215,7 +215,7 @@
     const currentRole = localStorage.getItem('role') || 'user';
     if (currentRole === 'reseller') {
         const banner = document.createElement('div');
-        banner.className = 'bg-warning text-dark text-center py-2 fw-bold shadow-sm mb-3';
+        banner.className = 'bg-warning text-dark text-center py-2 fw-bold shadow-sm';
         banner.style.fontSize = '14px';
         banner.innerHTML = '⚠️ Reseller Mode Active: You must order a minimum of 48 assorted items to checkout.';
         document.body.insertBefore(banner, document.body.firstChild);
