@@ -91,6 +91,37 @@
       color: #1e7e34;
       font-weight: bold;
     }
+
+    .refund-photo-thumb {
+      position: relative;
+      width: 70px;
+      height: 70px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .refund-photo-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .refund-photo-thumb .remove-photo-btn {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 11px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0;
+  }
   </style>
 </head>
 <body>
@@ -350,6 +381,14 @@
               <label for="refundDetails" class="form-label">Additional Details</label>
               <textarea class="form-control" id="refundDetails" rows="3" placeholder="Tell us more about the issue..."></textarea>
             </div>
+
+            <!-- NEW: Photo upload -->
+          <div class="mb-3">
+            <label for="refundPhotos" class="form-label">Upload Photos <span class="text-danger">*</span></label>
+            <input type="file" id="refundPhotos" accept="image/*" multiple class="form-control">
+            <div class="form-text">Please attach at least one photo to support your refund request (e.g., damaged or wrong item received).</div>
+            <div id="refundPhotoPreview" class="d-flex flex-wrap gap-2 mt-2"></div>
+          </div>
           </form>
         </div>
         <div class="modal-footer">
@@ -438,6 +477,42 @@
     // ---- Statuses that still allow a cancellation ----
     const CANCELLABLE_STATUSES = ['pending'];
 
+    let refundPhotos = [];
+
+    document.getElementById('refundPhotos').addEventListener('change', function (e) {
+      const files = Array.from(e.target.files);
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function (evt) {
+          refundPhotos.push(evt.target.result);
+          renderRefundPhotoPreview();
+        };
+        reader.readAsDataURL(file);
+      });
+      e.target.value = ''; // allow re-selecting the same file later
+    });
+
+    function renderRefundPhotoPreview() {
+      const preview = document.getElementById('refundPhotoPreview');
+      preview.innerHTML = refundPhotos.map((src, index) => `
+        <div class="refund-photo-thumb">
+          <img src="${src}" alt="Refund photo ${index + 1}">
+          <button type="button" class="remove-photo-btn" onclick="removeRefundPhoto(${index})">&times;</button>
+        </div>
+      `).join('');
+    }
+
+    function removeRefundPhoto(index) {
+      refundPhotos.splice(index, 1);
+      renderRefundPhotoPreview();
+    }
+
+    // Clear photos if the modal is closed without submitting
+    document.getElementById('refundModal').addEventListener('hidden.bs.modal', function () {
+      refundPhotos = [];
+      renderRefundPhotoPreview();
+    });
+
     document.getElementById('submitRefundBtn').addEventListener('click', function () {
     const orderSelect = document.getElementById('refundOrderId');
     const orderId = orderSelect.value;
@@ -449,15 +524,20 @@
       return;
     }
 
-    // Build a new refund request row
+    if (refundPhotos.length === 0) {
+      alert('Please upload at least one photo to support your refund request.');
+      return;
+    }
+
     const requestId = '#' + Math.floor(1000 + Math.random() * 9000);
     const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     const orderDisplayId = orderSelect.options[orderSelect.selectedIndex].text.split(' — ')[0];
+    const photoCount = refundPhotos.length;
 
     const refundTableBody = document.getElementById('refundsTableBody');
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
-      <td>${requestId}</td>
+      <td>${requestId} <i class="ri-image-line text-muted" title="${photoCount} photo(s) attached"></i></td>
       <td>${today}</td>
       <td>${orderDisplayId}</td>
       <td><span class="status-processing">Pending</span></td>
@@ -465,6 +545,8 @@
     refundTableBody.prepend(newRow);
 
     document.getElementById('refundForm').reset();
+    refundPhotos = [];
+    renderRefundPhotoPreview();
 
     const refundModal = bootstrap.Modal.getInstance(document.getElementById('refundModal'));
     if (refundModal) refundModal.hide();
