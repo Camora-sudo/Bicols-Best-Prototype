@@ -6,7 +6,7 @@ function getRole() {
 
 function logout() {
     localStorage.removeItem('role');
-    window.location.href = `${URL}/public/login.html`; 
+    window.location.href = `${URL}/index.html`; 
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <a href="${URL}/customer/contactPage.html" class="nav-link text-white mx-3">Contact Us</a>
             <a href="#" id="logout-link" class="nav-link text-white mx-3 me-4">Logout</a>
             <a href="${URL}/customer/shoppingCart.html" class="text-white fs-3"><i class="ri-shopping-cart-2-line"></i></a>
+
         `;
     } else if (role === 'admin') {
         badge = `<span class="badge bg-info text-dark ms-2 align-middle fs-6" style="vertical-align: text-bottom;">Admin</span>`;
@@ -41,14 +42,14 @@ document.addEventListener('DOMContentLoaded', () => {
             <a href="${URL}/customer/productCatalogue.html" class="nav-link text-white mx-3">Products</a>
             <a href="${URL}/customer/userProfile.html" class="nav-link text-white mx-3">Profile</a>
             <a href="${URL}/customer/contactPage.html" class="nav-link text-white mx-3">Contact Us</a>
-            <a href="#" id="logout-link" class="nav-link text-white mx-3 me-4">Logout</a>
+            <a href="${URL}/index.html" id="logout-link" class="nav-link text-white mx-3">Logout</a>
             <a href="${URL}/customer/shoppingCart.html" class="text-white fs-3"><i class="ri-shopping-cart-2-line"></i></a>
         `;
     } else {
 
         navLinks = `
             <a href="${URL}/customer/productCatalogue.html" class="nav-link text-white mx-3">Products</a>
-            <a href="${URL}/public/login.html" class="text-white fs-3"><i class="ri-login-box-line"></i></a>
+            <a href="${URL}/public/login.html" class="nav-link text-white mx-3">Log in</a>
         `;
     }
 
@@ -71,9 +72,14 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
           <style>
-            #navbar-content .nav-link { transition: color 0.2s ease, opacity 0.2s ease; }
-            #navbar-content .nav-link:hover { opacity: 0.8; }
-            #navbar-content .nav-link.active { font-weight: 700; }
+            #navbar-content .nav-link.active {
+            border-bottom: 2px solid #fff;
+            padding-bottom: 2px; /* keep vertical alignment consistent */
+            }
+            #navbar-content .nav-link {
+            border-bottom: 2px solid transparent; /* reserve the space even when inactive */
+            padding-bottom: 2px;
+            }
           </style>
         </header>
     `;

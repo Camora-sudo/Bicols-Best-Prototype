@@ -138,6 +138,11 @@
       font-weight: 500;
       cursor: pointer;
     }
+
+    .guest-locked {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
@@ -161,130 +166,179 @@
     </div>
   </div>
 
+  <!-- Login Required Toast -->
+  <div id="loginToast" class="toast align-items-center text-white border-0 position-fixed bottom-0 end-0 m-3" role="alert" aria-live="assertive" aria-atomic="true" style="background-color:#821b16;">
+  <div class="d-flex">
+    <div class="toast-body">
+      Please log in to add items to your cart.
+      <a href="../public/login.html" id="loginToastLink" class="text-white text-decoration-underline fw-semibold ms-2">Log In</a>
+    </div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+</div>
+
   <!-- Bootstrap JS bundle for Toast -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../navbar.js"></script>
   <script>
 
-     const products = [
-            { id: 1, name: "Bicol's Best Bicol Express Pork – 210g", brand: "Bicol's Best", price: 220, stock: 500, moq: 24, sku: "BBST-BXPRK-210", specs: "210g | 7.4oz | UPC 0480901536200", desc: "Bicol's Best Bicol Express Pork is a savory and fiery classic made from choice pork cuts simmered slowly in rich coconut milk, fermented shrimp paste, and authentic Bicolano chili peppers.", img: "../images/BE_Pork.png" },
-            { id: 2, name: "Bicol's Best Bicol Express Tinapa – 210g", brand: "Bicol's Best", price: 220, stock: 498, moq: 24, sku: "BBST-BXTIN-210", specs: "210g | 7.4oz | UPC 04809015362013", desc: "Bicol's Best Bicol Express Tinapa is a rich and spicy blend of smoked fish cooked in creamy coconut milk with chili, delivering an authentic Bicolano flavor in every bite.", img: "../images/BE_Tinapa.png" },
-            { id: 3, name: "Bicol's Best Laing Regular – 226g", brand: "Bicol's Best", price: 168, stock: 300, moq: 24, sku: "BBST-LNGREG-226", specs: "226g | 8.0oz | UPC 04809015362020", desc: "Bicol's Best Laing Regular features tender dried taro leaves cooked in concentrated coconut milk with fresh spices, bringing a traditional homestyle Bicolano delicacy to your table.", img: "../images/Regular_Laing.png" },
-            { id: 4, name: "Bicol's Best Laing Spicy – 226g", brand: "Bicol's Best", price: 168, stock: 315, moq: 24, sku: "BBST-LNGSPC-226", specs: "226g | 8.0oz | UPC 04809015362037", desc: "Bicol's Best Laing Spicy blends selected dried taro leaves with rich coconut cream and an extra kick of native chili for spicy food enthusiasts.", img: "../images/Spicy_Laing.png" },
-            { id: 5, name: "Bicol's Best Gulay na Santol Regular – 210g", brand: "Bicol's Best", price: 168, stock: 300, moq: 24, sku: "BBST-GNSREG-220", specs: "210g | 7.4oz | UPC 04809015362044", desc: "Bicol's Best Gulay na Santol Regular (Sinantolan) combines finely grated santol pulp with thick coconut cream and spices for a perfectly balanced savory dish.", img: "../images/Regular_Santol.png" },
-            { id: 6, name: "Bicol's Best Gulay na Santol Spicy – 210g", brand: "Bicol's Best", price: 168, stock: 300, moq: 24, sku: "BBST-GNSSPC-220", specs: "210g | 7.4oz | UPC 04809015362051", desc: "Bicol's Best Gulay na Santol Spicy offers a uniquely sour, sweet, savory, and extra fiery profile using shredded santol fruit slow-cooked in coconut milk.", img: "../images/Spicy_Santol.png" },
-            { id: 7, name: "Bicol's Best Bicol Chili Paste – 100g", brand: "Bicol's Best", price: 168, stock: 300, moq: 24, sku: "BBST-CHLPST-100", specs: "100g | 3.53oz | UPC 04809015362068", desc: "Bicol's Best Bicol Chili Paste is crafted from fresh labuyo peppers and aromatic spices, delivering pure heat and rich flavor to any meal.", img: "../images/Chili_Paste.png" },
-            { id: 8, name: "Bicol's Best Very Special Pinangat Regular – 240g", brand: "Bicol's Best", price: 100, stock: 300, moq: 24, sku: "BBST-PNGREG-240", specs: "240g | 8.47oz | UPC 04809015362075", desc: "Bicol's Best Very Special Pinangat Regular features carefully layered taro leaves stuffed with seafood and pork, bound with thick coconut milk.", img: "../images/Regular_Pinangat.png" },
-            { id: 9, name: "Bicol's Best Very Special Pinangat Spicy – 240g", brand: "Bicol's Best", price: 100, stock: 300, moq: 24, sku: "BBST-PNGSPC-240", specs: "240g | 8.47oz | UPC 048₀9₀₁₅₃₆₂₀₈₂", desc: "Bicol's Best Very Special Pinangat Spicy delivers an authentic Camalig Pinangat experience stuffed with fiery red chilies and rich coconut cream.", img: "../images/Spicy_Pinangat.png" }
-        ];
+   const products = [
+          { id: 1, name: "Bicol's Best Bicol Express Pork – 210g", brand: "Bicol's Best", price: 220, stock: 500, moq: 24, sku: "BBST-BXPRK-210", specs: "210g | 7.4oz | UPC 0480901536200", desc: "Bicol's Best Bicol Express Pork is a savory and fiery classic made from choice pork cuts simmered slowly in rich coconut milk, fermented shrimp paste, and authentic Bicolano chili peppers.", img: "../images/BE_Pork.png" },
+          { id: 2, name: "Bicol's Best Bicol Express Tinapa – 210g", brand: "Bicol's Best", price: 220, stock: 498, moq: 24, sku: "BBST-BXTIN-210", specs: "210g | 7.4oz | UPC 04809015362013", desc: "Bicol's Best Bicol Express Tinapa is a rich and spicy blend of smoked fish cooked in creamy coconut milk with chili, delivering an authentic Bicolano flavor in every bite.", img: "../images/BE_Tinapa.png" },
+          { id: 3, name: "Bicol's Best Laing Regular – 226g", brand: "Bicol's Best", price: 168, stock: 300, moq: 24, sku: "BBST-LNGREG-226", specs: "226g | 8.0oz | UPC 04809015362020", desc: "Bicol's Best Laing Regular features tender dried taro leaves cooked in concentrated coconut milk with fresh spices, bringing a traditional homestyle Bicolano delicacy to your table.", img: "../images/Regular_Laing.png" },
+          { id: 4, name: "Bicol's Best Laing Spicy – 226g", brand: "Bicol's Best", price: 168, stock: 315, moq: 24, sku: "BBST-LNGSPC-226", specs: "226g | 8.0oz | UPC 04809015362037", desc: "Bicol's Best Laing Spicy blends selected dried taro leaves with rich coconut cream and an extra kick of native chili for spicy food enthusiasts.", img: "../images/Spicy_Laing.png" },
+          { id: 5, name: "Bicol's Best Gulay na Santol Regular – 210g", brand: "Bicol's Best", price: 168, stock: 300, moq: 24, sku: "BBST-GNSREG-220", specs: "210g | 7.4oz | UPC 04809015362044", desc: "Bicol's Best Gulay na Santol Regular (Sinantolan) combines finely grated santol pulp with thick coconut cream and spices for a perfectly balanced savory dish.", img: "../images/Regular_Santol.png" },
+          { id: 6, name: "Bicol's Best Gulay na Santol Spicy – 210g", brand: "Bicol's Best", price: 168, stock: 300, moq: 24, sku: "BBST-GNSSPC-220", specs: "210g | 7.4oz | UPC 04809015362051", desc: "Bicol's Best Gulay na Santol Spicy offers a uniquely sour, sweet, savory, and extra fiery profile using shredded santol fruit slow-cooked in coconut milk.", img: "../images/Spicy_Santol.png" },
+          { id: 7, name: "Bicol's Best Bicol Chili Paste – 100g", brand: "Bicol's Best", price: 168, stock: 300, moq: 24, sku: "BBST-CHLPST-100", specs: "100g | 3.53oz | UPC 04809015362068", desc: "Bicol's Best Bicol Chili Paste is crafted from fresh labuyo peppers and aromatic spices, delivering pure heat and rich flavor to any meal.", img: "../images/Chili_Paste.png" },
+          { id: 8, name: "Bicol's Best Very Special Pinangat Regular – 240g", brand: "Bicol's Best", price: 100, stock: 300, moq: 24, sku: "BBST-PNGREG-240", specs: "240g | 8.47oz | UPC 04809015362075", desc: "Bicol's Best Very Special Pinangat Regular features carefully layered taro leaves stuffed with seafood and pork, bound with thick coconut milk.", img: "../images/Regular_Pinangat.png" },
+          { id: 9, name: "Bicol's Best Very Special Pinangat Spicy – 240g", brand: "Bicol's Best", price: 100, stock: 300, moq: 24, sku: "BBST-PNGSPC-240", specs: "240g | 8.47oz | UPC 048₀9₀₁₅₃₆₂₀₈₂", desc: "Bicol's Best Very Special Pinangat Spicy delivers an authentic Camalig Pinangat experience stuffed with fiery red chilies and rich coconut cream.", img: "../images/Spicy_Pinangat.png" }
+      ];
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = parseInt(urlParams.get('id')) || 2; 
-    let product = products.find(p => p.id === productId) || products[1];
+  const urlParams = new URLSearchParams(window.location.search);
+  const productId = parseInt(urlParams.get('id')) || 2; 
+  let product = products.find(p => p.id === productId) || products[1];
 
-    document.addEventListener('DOMContentLoaded', () => {
-      // Check Role and Inject Banner if Reseller
-      const currentRole = localStorage.getItem('role') || 'user';
-      if (currentRole === 'reseller') {
-          const banner = document.createElement('div');
-          banner.className = 'bg-warning text-dark text-center py-2 fw-bold shadow-sm mb-3';
-          banner.style.fontSize = '14px';
-          banner.innerHTML = '⚠️ Reseller Mode Active: You must order a minimum of 48 assorted items to checkout.';
-          document.body.insertBefore(banner, document.body.firstChild);
-      }
+  // ---- Login helpers ----
+  function isLoggedIn() {
+    return !!localStorage.getItem('role');
+  }
 
-      // Identify Role text for stock
-      let roleText = "";
-      if (currentRole === 'reseller') roleText = ` <span class="text-danger fw-bold">(Reseller MOQ: 48 items)</span>`;
-      else if (currentRole === 'admin') roleText = ` <span class="text-primary fw-bold">(Admin View)</span>`;
+  function showLoginToast() {
+    const returnTo = encodeURIComponent(window.location.pathname + window.location.search);
+    document.getElementById('loginToastLink').href = `../public/login.html?returnTo=${returnTo}`;
+    const loginToastEl = document.getElementById('loginToast');
+    const loginToast = new bootstrap.Toast(loginToastEl);
+    loginToast.show();
+  }
 
-      const container = document.getElementById('productContainer');
-      container.innerHTML = `
-        <div class="col-md-6 d-flex align-items-center justify-content-center p-4 bg-light rounded-4">
-          <img src="${product.img}" alt="${product.name}" onerror="this.src='../images/logo.png'" class="product-image" style="max-height: 400px; object-fit: contain;">
+  document.addEventListener('DOMContentLoaded', () => {
+    const guest = !isLoggedIn();
+
+    // Check Role and Inject Banner if Reseller
+    const currentRole = localStorage.getItem('role') || 'user';
+    if (currentRole === 'reseller') {
+        const banner = document.createElement('div');
+        banner.className = 'bg-warning text-dark text-center py-2 fw-bold shadow-sm mb-3';
+        banner.style.fontSize = '14px';
+        banner.innerHTML = '⚠️ Reseller Mode Active: You must order a minimum of 48 assorted items to checkout.';
+        document.body.insertBefore(banner, document.body.firstChild);
+    }
+
+    // Identify Role text for stock
+    let roleText = "";
+    if (currentRole === 'reseller') roleText = ` <span class="text-danger fw-bold">(Reseller MOQ: 48 items)</span>`;
+    else if (currentRole === 'admin') roleText = ` <span class="text-primary fw-bold">(Admin View)</span>`;
+
+    const container = document.getElementById('productContainer');
+    container.innerHTML = `
+      <div class="col-md-6 d-flex align-items-center justify-content-center p-4 bg-light rounded-4">
+        <img src="${product.img}" alt="${product.name}" onerror="this.src='../images/logo.png'" class="product-image" style="max-height: 400px; object-fit: contain;">
+      </div>
+      <div class="col-md-6 d-flex flex-column justify-content-center px-lg-5">
+        <div class="product-brand">${product.brand}</div>
+        <h1 class="product-title">${product.name}</h1>
+        
+        <div class="d-flex align-items-center mb-4">
+          <span class="product-price">₱${product.price.toFixed(2)}</span>
+          <span class="ms-3 text-success fw-semibold" id="prod-stock">${product.stock} in stock ${roleText}</span>
         </div>
-        <div class="col-md-6 d-flex flex-column justify-content-center px-lg-5">
-          <div class="product-brand">${product.brand}</div>
-          <h1 class="product-title">${product.name}</h1>
-          
-          <div class="d-flex align-items-center mb-4">
-            <span class="product-price">₱${product.price.toFixed(2)}</span>
-            <span class="ms-3 text-success fw-semibold" id="prod-stock">${product.stock} in stock ${roleText}</span>
-          </div>
 
-          <div class="mb-2 fw-semibold text-muted">Quantity</div>
-          <div class="d-flex align-items-center gap-4 mb-4">
-              <div class="d-flex align-items-center">
-                <button class="qty-btn" onclick="updateQty(-1)"><i class="ri-subtract-line"></i></button>
-                
-                <input type="number" id="qtyInput" value="1" class="qty-input mx-2" onchange="manualUpdateQty(this.value)">
-                
-                <button class="qty-btn" onclick="updateQty(1)"><i class="ri-add-line"></i></button>
-              </div>
-              <button class="btn-add-cart" onclick="addToCart()">Add to Cart</button>
-          </div>
-
-          <div class="sku-block">SKU: ${product.sku}</div>
-          <div class="spec-block">${product.specs}</div>
-
-          <p class="product-description">${product.desc}</p>
-
-          <div class="text-end">
-            <a href="productReviews.html?id=${product.id}" class="reviews-link"><i class="ri-chat-3-line me-1"></i> Reviews</a>
-          </div>
+        <div class="mb-2 fw-semibold text-muted">Quantity</div>
+        <div class="d-flex align-items-center gap-4 mb-4">
+            <div class="d-flex align-items-center">
+              <button class="qty-btn ${guest ? 'guest-locked' : ''}" onclick="updateQty(-1)"><i class="ri-subtract-line"></i></button>
+              
+              <input type="number" id="qtyInput" value="1" class="qty-input mx-2 ${guest ? 'guest-locked' : ''}" onchange="manualUpdateQty(this.value)">
+              
+              <button class="qty-btn ${guest ? 'guest-locked' : ''}" onclick="updateQty(1)"><i class="ri-add-line"></i></button>
+            </div>
+            <button class="btn-add-cart" onclick="addToCart()">Add to Cart</button>
         </div>
-      `;
-    });
 
-    let currentQty = 1;
+        <div class="sku-block">SKU: ${product.sku}</div>
+        <div class="spec-block">${product.specs}</div>
 
-    // Function for the + and - buttons
-    function updateQty(change) {
-      currentQty = Math.max(1, currentQty + change);
-      document.getElementById('qtyInput').value = currentQty;
+        <p class="product-description">${product.desc}</p>
+
+        <div class="text-end">
+          <a href="productReviews.html?id=${product.id}" class="reviews-link ${guest ? 'guest-locked' : ''}"><i class="ri-chat-3-line me-1"></i> Reviews</a>
+        </div>
+      </div>
+    `;
+
+    // Guard the Reviews link for guests
+    const reviewsLink = container.querySelector('.reviews-link');
+    if (reviewsLink) {
+      reviewsLink.addEventListener('click', function (e) {
+        if (!isLoggedIn()) {
+          e.preventDefault();
+          showLoginToast();
+        }
+      });
+    }
+  });
+
+  let currentQty = 1;
+
+  // Function for the + and - buttons
+  function updateQty(change) {
+    if (!isLoggedIn()) {
+      showLoginToast();
+      return;
+    }
+    currentQty = Math.max(1, currentQty + change);
+    document.getElementById('qtyInput').value = currentQty;
+  }
+
+  // Function for typing the number manually
+  function manualUpdateQty(newValue) {
+    if (!isLoggedIn()) {
+      showLoginToast();
+      document.getElementById('qtyInput').value = currentQty; // revert any typed value
+      return;
+    }
+    let val = parseInt(newValue);
+    if (isNaN(val) || val < 1) {
+      val = 1;
+    }
+    currentQty = val;
+    document.getElementById('qtyInput').value = currentQty;
+  }
+
+  function addToCart() {
+    if (!isLoggedIn()) {
+      showLoginToast();
+      return;
     }
 
-    // Function for typing the number manually
-    function manualUpdateQty(newValue) {
-      let val = parseInt(newValue);
-      if (isNaN(val) || val < 1) {
-        val = 1;
-      }
-      currentQty = val;
-      document.getElementById('qtyInput').value = currentQty;
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingIndex = cart.findIndex(item => item.id === product.id);
+
+    if (existingIndex > -1) {
+      cart[existingIndex].quantity += currentQty;
+    } else {
+      cart.push({
+        id: product.id,
+        brand: product.brand,
+        name: product.name,
+        price: product.price,
+        sku: product.sku,
+        specs: product.specs,
+        img: product.img,
+        quantity: currentQty
+      });
     }
 
-    function addToCart() {
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const existingIndex = cart.findIndex(item => item.id === product.id);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    window.dispatchEvent(new Event('cartUpdated'));
 
-      if (existingIndex > -1) {
-        cart[existingIndex].quantity += currentQty;
-      } else {
-        cart.push({
-          id: product.id,
-          brand: product.brand,
-          name: product.name,
-          price: product.price,
-          sku: product.sku,
-          specs: product.specs,
-          img: product.img,
-          quantity: currentQty
-        });
-      }
-
-      localStorage.setItem('cart', JSON.stringify(cart));
-      window.dispatchEvent(new Event('cartUpdated'));
-
-      // Show Bootstrap Toast correctly
-      const toastElement = document.getElementById('toast');
-      const toast = new bootstrap.Toast(toastElement);
-      toast.show();
-      
-      // Reset quantity
-      currentQty = 1;
-      document.getElementById('qtyInput').value = 1;
-    }
-  </script>
+    const toastElement = document.getElementById('toast');
+    const toast = new bootstrap.Toast(toastElement);
+    toast.show();
+    
+    currentQty = 1;
+    document.getElementById('qtyInput').value = 1;
+  }
+</script>
 </body>
 </html>
