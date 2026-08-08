@@ -33,6 +33,10 @@
               Incorrect password. Please try again.
             </div>
 
+            <div id="login-disabled-error" class="text-danger text-center mb-3 d-none fw-bold" style="font-size: 0.85rem;">
+              Account is disabled, please contact the admin.
+            </div>
+
             <button type="submit" class="btn btn-danger w-100 rounded-pill" style="background-color: #821b16; border-color: #821b16;">Login</button>
           </form>
 
@@ -42,6 +46,7 @@
               <li><strong>Admin:</strong> <code>admin@bicolsbest.com / bic0lsb3st@dm!n</code></li>
               <li><strong>Reseller:</strong> <code>reseller@bicolsbest.com / bic0lsb3stres311eR</code></li>
               <li><strong>User:</strong> <code>user@gmail.com / bic0lsb3stU$er</code></li>
+              <li><strong>Disabled user:</strong> <code>disableduser@gmail.com / d!sabl3duser</code></li>
             </ul>
           </div>
 
@@ -73,15 +78,21 @@
       const email = document.getElementById('email').value.toLowerCase();
       const password = document.getElementById('password').value;
       const errorMsg = document.getElementById('login-error');
+      const errorDisabledMsg = document.getElementById('login-disabled-error');
 
 
       // Check password
       if(!((password === "bic0lsb3st@dm!n" && email === "admin@bicolsbest.com")
           || (password === "bic0lsb3stres311eR" && email === "reseller@bicolsbest.com")
-          || (password === "bic0lsb3stU$er" && email === "user@gmail.com"))
+          || (password === "bic0lsb3stU$er" && email === "user@gmail.com")
+          || (password === "d!sabl3duser" && email === "disableduser@gmail.com"))
       ){
         errorMsg.classList.remove('d-none');
         document.getElementById('password').style.borderColor = 'red';
+        return;
+      }
+      else if(password === "d!sabl3duser" && email === "disableduser@gmail.com"){
+        errorDisabledMsg.classList.remove('d-none');
         return;
       }
 
