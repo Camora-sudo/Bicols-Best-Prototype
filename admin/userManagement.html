@@ -534,7 +534,7 @@
 
 
     const email =
-      document.getElementById('userEmail').value.trim();
+      document.getElementById('userEmail').value;
 
 
     const status =
@@ -568,6 +568,7 @@
 
 
       user.name = name;
+      user.email = email;
       user.status = status;
 
 
@@ -577,6 +578,7 @@
       users.push({
         id: users.length + 1,
         name: name,
+        email: email,
         status: status,
         img: "../images/pfp.png"
       });
