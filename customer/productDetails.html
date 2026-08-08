@@ -310,6 +310,10 @@
       showLoginToast();
       return;
     }
+    else if (document.getElementById('qtyInput').value > product.stock){
+      alert("The inputted quantity exceeds stock!");
+      return;
+    }
 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const existingIndex = cart.findIndex(item => item.id === product.id);

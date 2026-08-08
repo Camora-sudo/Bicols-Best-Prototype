@@ -152,6 +152,11 @@
         // Function for typing the number manually
         function setQuantity(id, newValue) {
             const itemIndex = cart.findIndex(item => item.id === id);
+            if(newValue > 500){
+                alert("New quantity exceeds stock!");
+                
+                return;
+            }
             if (itemIndex > -1) {
                 let newQty = parseInt(newValue);
                 if (isNaN(newQty) || newQty < 1) newQty = 1; 
